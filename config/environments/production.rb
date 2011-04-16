@@ -1,4 +1,4 @@
-SeniorProjects2009::Application.configure do
+Schedulr::Application.configure do
   # Settings specified here will take precedence over those in config/environment.rb
 
   # The production environment is meant for finished, "live" apps.
@@ -51,7 +51,7 @@ SeniorProjects2009::Application.configure do
     
   config.middleware.use ExceptionNotifier,
     :email_prefix => "[Schedulr] ",
-    :sender_address => %{"Schedulr" <vuschedulr@gmail.com>},
+    :sender_address => %{"Schedulr" <schedulr@betterschedulr.com>},
     :exception_recipients => %w{aj.palkovic@gmail.com},
     :ignore_exceptions => [
       AbstractController::ActionNotFound
