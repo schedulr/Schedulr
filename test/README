@@ -1,6 +1,0 @@
-; these lines most likely only need to be done once per major change
-rake db:test:prepare
-rake db:fixtures:dump
-ruby test/load_test_data.rb
-
-rake test:functionals
