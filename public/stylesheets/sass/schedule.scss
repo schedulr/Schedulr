@@ -4,6 +4,42 @@
   float: left;
 }
 
+.timeSelectContainer {
+  /*background-color: rgba(100, 100, 100, .5);*/
+  display: block;
+  left: 105px;
+  position: relative;
+  top: 23px;
+  width: 530px;
+}
+
+.selection {
+  background: #548DD4;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#548DD4), to(#4B7EBE));
+  background: -moz-linear-gradient(top, #5894DE, #4F85C9);
+  /*border: 1px solid #0000FF;*/
+  -webkit-border-image: url(../images/border.png) 9 round;
+  /*border-radius: 5px;*/
+  height: 0px;
+  opacity: 0.6;
+  position: absolute;
+  width: 98px;
+}
+
+.startTimeLabel, .endTimeLabel {
+  background: #FEFEFE;
+  background-color: rgba(255, 255, 255, .7);
+  border: 1px dotted #0000FF;
+  cursor: default;
+  display: none;
+  font-size: 12px;
+  height: 14px;
+  padding: 2px 0px 2px 0px;
+  position: absolute;
+  text-align: center;
+  width: 99px;
+}
+
 .scheduleInnerContainer {
   position: relative;
   width: 638px;

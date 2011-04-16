@@ -18,8 +18,10 @@ var Schedule = (function($) {
       this.manager = manager;
       this.container = container;
       this.getColorFunction = this.manager.getColor.bind(this.manager);
+      this.timeSelectManager = new TimeSelectManager(this);
+      this.startTime = undefined;
       
-      if(data && data.courses) {
+      if (data && data.courses) {
         this.id = data.id;
         this.name = data.name;
         this.courses = data.courses.clone();
@@ -60,6 +62,11 @@ var Schedule = (function($) {
         var slotIndex = parseInt(tdTag.attr('data-scheduleSlot'), 10);
         items[slotIndex][itemIndex].callback();
       }).wrapEvent(this));
+      
+      
+      $('.timeSelectContainer', table).bind('mousedown mousemove mouseup mouseenter', this.timeSelectManager.selectionEvent.wrap(this.timeSelectManager));
+      $('.timeSelectContainer', table).bind('onselectstart', function() { return false; });
+      $('body').bind('mouseup mouseleave', this.timeSelectManager.externalMouseReleased.wrap(this.timeSelectManager));
     },
     
     // Returns true if the given section would be a conflict on this schedule
@@ -165,6 +172,8 @@ var Schedule = (function($) {
       startTime = new SchedulrTime([startTime.hours, 0]);
       if(endTime.minutes !== 0) endTime = new SchedulrTime([endTime.hours+1, 0]);
       else endTime = endTime.clone();
+      
+      this.startTime = startTime.clone();
       
       var height = this.offset(startTime, {start: endTime, end: endTime}).offset;
       if(height < 50) height = 50;

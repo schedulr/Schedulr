@@ -152,7 +152,53 @@ jQuery.config = {
       }
     }
   },
+  
+  timeSelect: {
+    eventTargets: {
+      timeSelectContainer: {
+        mousedown: true,
+        mousemove: true,
+        mouseup: true,
+        mouseenter: true
+      },
+      selection: {
+        // We define a handler for clicks on selections in timeSelectManager.js, so we don't want to handle it
+        // if it happens on the container.
+        mousedown: false,
+        mousemove: true,
+        mouseup: true,
+        mouseenter: true
+      },
+      startTimeLabel: {
+        mousedown: true,
+        mousemove: true,
+        mouseup: true,
+        mouseenter: true
+      },
+      endTimeLabel: {
+        mousedown: true,
+        mousemove: true,
+        mouseup: true,
+        mouseenter: true
+      }
+    },
+    containerZIndex: 100,
+    selection: {
+      boxWidth: 99,
+      dayColumnWidth: 106,
+      minHeight: 16,
+      timeInterval: 5,
+      timeLabelOffset: 25,
+      timeLabelDelta: 60,
+      timeLabelHeight: 20,
+      cursorOffset: 5
+    },
+    mouseEvent: {
+      left: 1
+    },
     
+  },
+  
   help: {
     templates: {
       helpTemplate: 'help/schedule'

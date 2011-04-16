@@ -1,6 +1,7 @@
 %h3= h(name)
 
 .scheduleInnerContainer{:style => 'height: '+height+'px'}
+  .timeSelectContainer{:style => 'height: '+(height - 23)+'px'}
   .credits Credits: #{credits}
   
   - var days = $w('Monday Tuesday Wednesday Thursday Friday');
@@ -9,8 +10,8 @@
       .scheduleCell.scheduleDay{:class => 'scheduleColumn'+(c+1), :style => 'top: 6px;'}= day
         
   - if endTime.hours === 0
-    %div{:style => 'position: absolute; top: 28px; left: 70px;'} Whoa, goin for a light load?  You ain't got any of 'em learnin things on your schedule yet!
-
+    .noCourses{:style => 'position: absolute; top: 28px; left: 70px;'} Whoa, goin for a light load?  You ain't got any of 'em learnin things on your schedule yet!
+  
   - else
     -# Print time labels
     - var time = startTime;
