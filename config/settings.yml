@@ -1,0 +1,10 @@
+---
+development:
+  username: schedulr
+  domain: betterschedulr.com
+  sshkey: ~/.ssh/id_rsa
+  
+production:
+  username: schedulr
+  domain: betterschedulr.com
+  sshkey: ~/.ssh/id_rsa

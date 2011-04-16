@@ -1,0 +1,16 @@
+%div
+  %center
+    %img{:src => image_path("/images/warning.png")}
+  %div
+    %div{:style => "margin-bottom: 10px"}
+      %span{:style => "color: #ff8400"}
+        <strong>Your schedule was successfully exported, but one 
+        or more conflicts have prevented courses from being added:</strong>
+    %div{:style => "height: 75px; overflow: auto"}
+      %ul
+        - for conflict in conflictList using index
+          %li{:style => "padding: 3px 3px 3px 3px;" + ((index % 2) ? "background-color: #E6E6E6" : "")}
+            <strong>#{conflict.courseTitle}</strong> conflicts with 
+            <strong>#{conflict.eventTitle}</strong> on <strong>#{conflict.day}</strong> 
+            at <strong>#{conflict.time}</strong>
+      %ul

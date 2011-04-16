@@ -1,0 +1,14 @@
+%ul.drillDownList      
+  - for item in items using c
+    %li{class: 'drillDownRow drillDownArrowRow '+(classes[c] || '')}
+      %a{id: 'ddr-'+index+'-'+c, href: 'javascript:void(0);'}= item
+      
+- if(filteredItems.length > 0)
+  %h3 Filtered Items:
+  %ul.drillDownList
+    - for item in filteredItems using c
+      %li{class: 'filteredItem drillDownRow drillDownArrowRow '+(classes[c] || '')}
+        %a{id: 'ddrf-'+index+'-'+c, href: 'javascript:void(0);'}= item
+
+    %li.itemsRemoved
+      %a.changeFilters{:href => 'javascript:void(0);'} Change Filters

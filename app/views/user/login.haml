@@ -1,0 +1,73 @@
+.subPage
+  %h1 Login to Schedulr
+  
+  %table#loginTable
+    %tr
+      %th
+        %h2 A. Register
+      %th
+        %h2 B. Login
+      %th
+        %h2 C. Create/Reset Password
+        
+    %tr
+      %th If you have never signed up for Schedulr before, then register here.
+      %th If you have used Schedulr before and have a *Schedulr specific* password, then login here.
+      %th If you have used Schedulr before but you have not created a *Schedulr specific* password, then begin that process here.
+        
+    %tr
+      %td
+        = form_for :person, :url => {:action => 'on_register'} do |form|
+          %label First Name:
+          = form.text_field :firstname
+          
+          %label Last Name:
+          = form.text_field :lastname
+          
+          %label Email:
+          = form.text_field :email
+          
+          %br
+          = check_box :disclaimer, :agree
+          %label.terms I agree to the disclaimer below.
+          %br
+          
+          = form.submit 'Register'
+      %td
+        = form_for :person, :url => {:action => 'on_login'} do |form|
+          %label Email:
+          = form.text_field :email
+          
+          %label Password:
+          = form.password_field :password
+          
+          %br
+          = check_box :disclaimer, :agree
+          %label.terms I agree to the disclaimer below.
+          %br
+          
+          = form.submit 'Login'
+      %td
+        = form_for :person, :url => {:action => 'on_reset'} do |form|
+          %label Email:
+          = form.text_field :email
+          
+          %br
+          = check_box :disclaimer, :agree
+          %label.terms I agree to the disclaimer below.
+          %br
+          
+          = form.submit 'Continue'
+          
+    %tr
+      %td{:colspan => '3', :style => 'border:none;'}
+        %br
+        %strong Disclaimer:
+        %br
+        Although I have made every effort to ensure Schedulr is compatible with Novasis, I cannot guarantee this.  Any schedule is not valid until it has been submitted and accepted on Novasis.  Villanova University is not responsible for or affiliated with Schedulr.  Use Schedulr at your own risk.
+        %br
+        %br
+        Course data is updated nightly from Novasis.  Enrollment data is updated up to every three minutes.  Data may be slightly out of date.
+        %br
+        %br
+        All upport requests must be sent via the Report a Bug button above.  Please do not contact University personnel regarding Schedulr.

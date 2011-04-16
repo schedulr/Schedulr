@@ -1,0 +1,12 @@
+@{labels: []}
+%table
+  %tr
+    - if labels.length == 0
+      - labels = values;
+    - for value in labels
+      %th
+        %label.feedbackRadioLabel{:for => name}= value
+  %tr
+    - for value in values
+      %td
+        %input{:type => 'radio', :name => name, :value => value}

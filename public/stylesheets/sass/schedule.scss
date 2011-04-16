@@ -1,0 +1,227 @@
+@import "variables";
+
+#scheduleContainer {
+  float: left;
+}
+
+.scheduleInnerContainer {
+  position: relative;
+  width: 638px;
+  
+  .scheduleCell {
+    position: absolute;
+    width: 98px;
+  }
+  
+  .scheduleColumn0 { left: 0px;}
+  .scheduleColumn1 { left: 106px;}
+  .scheduleColumn2 { left: 212px;}
+  .scheduleColumn3 { left: 318px;}
+  .scheduleColumn4 { left: 424px;}
+  .scheduleColumn5 { left: 530px;}
+  
+  /*Column Headings */
+  .scheduleDay {
+    color: #444444;
+    font-weight: bold;
+    text-align: center;
+    padding: 0 3px 3px 3px;
+  }
+  
+  /*Row Headings */
+  .scheduleTime {
+    color: #444444;
+    text-align: right;
+    padding: 1px 3px;
+  }
+  
+  .scheduleHourMark {
+    left: 2px;
+    position: absolute;
+    width: 634px;
+    border-top: 1px dotted #EEE;
+  }
+
+  /*A course */
+  .scheduleCourse, .filteredTime {
+    border: 1px solid $grey;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    box-shadow: 2px 2px 4px #BBB;
+    -moz-box-shadow: 2px 2px 4px #BBB;
+    text-align: center;
+    vertical-align: middle;
+  }
+  
+  .credits {
+    font-weight: bold;
+    position: absolute;
+    right: 2px;
+    top: -18px;
+  }
+    
+  .scheduleColor-0 { @include scheduleShadow(#548DD4); }
+  .scheduleColor-6 { @include scheduleShadow(#4F81BD); }
+  .scheduleColor-5 { @include scheduleShadow(#C0504D); }
+  .scheduleColor-2 { @include scheduleShadow(#9BBB59); }
+  .scheduleColor-3 { @include scheduleShadow(#B2A1C7); }
+  .scheduleColor-4 { @include scheduleShadow(#4BACC6); }
+  .scheduleColor-1 { @include scheduleShadow(#F79646); }
+  
+  .scheduleConflict {
+    color: #C00D1A;
+  }
+  
+  .noCourses {
+    color: $grey;
+    text-align: center;
+    padding: 5px 10px;
+  }
+  
+  .filteredTime {
+    //@include scheduleColor(#666666, #000000, 0.7);
+    @include scheduleColor(#ACACAC, #777, 0.9);
+    color: #FFFFFF;
+    text-shadow: 1px 1px #777;
+  }
+}
+
+.scheduleColor-0 { @include scheduleColor(#548DD4, #2A476B); }
+.scheduleColor-6 { @include scheduleColor(#4F81BD, #35587F, 0.8); }
+.scheduleColor-5 { @include scheduleColor(#C0504D, #773231); }
+.scheduleColor-2 { @include scheduleColor(#9BBB59, #6C823E); }
+.scheduleColor-3 { @include scheduleColor(#B2A1C7, #5F497A); }
+.scheduleColor-4 { @include scheduleColor(#4BACC6, #2C7889); }
+.scheduleColor-1 { @include scheduleColor(#F79646, #C45C07); }
+.scheduleColor-7 { @include scheduleColor(#DDDDDD); }
+.scheduleColor-8 { @include scheduleColor(#B8CCE4); }
+.scheduleColor-9 { @include scheduleColor(#E5B9B7); }
+.scheduleColor-10 { @include scheduleColor(#D7E3BC); }
+.scheduleColor-11 { @include scheduleColor(#FBD5B5); }
+
+/* Conflict Dialog and Sidebar */
+.actionList {
+  list-style-type: none;
+  margin: 0;
+  margin-bottom: 2px;
+  padding: 0;
+  
+  li {
+    border-bottom: 1px solid #BBBBBB;
+    margin: 0 10px;
+    padding: 2px 0 2px 5px;
+    
+    &:hover {
+      background-color: #DDDDDD;
+      cursor: pointer;
+    }
+  }
+}
+
+.sidebar {
+  padding: 0 2px;
+  
+  .actionList {
+    li {
+      margin: 0;
+      padding: 5px 0 5px 5px;
+    }
+    .activeSchedule {
+      background-color: #EEE;
+    }
+  }
+}
+
+.scheduleSidebar .sidebar {
+  min-width: 145px;
+}
+
+.scheduleSidebar, #enrollmentSidebar {
+  float: left;
+  width: 180px;
+}
+
+.sidebarCourses {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  
+  li {
+    border-style: solid;
+    border-width: 1px 0;
+    margin: 3px 0px;
+    padding: 3px 0 3px 5px;
+  }
+  
+  li.noCourses {
+    border: none;
+    color: $grey;
+    text-align: center;
+    padding-left: 0;
+  }
+}
+
+.popupContainer {
+  position: relative;
+}
+  .schedulePopupMenu {
+    display: none;
+    position: absolute;
+    z-index: 999;
+    text-shadow: none;
+    
+    .drillDownRow {
+      /* Override styles from sidebar */
+      border: 0px !important;
+      margin: 0 !important;
+      padding-right: 10px;
+      padding-top: 2px;
+      
+      a {
+        color: #000000;
+        text-decoration: none;
+      }
+    }
+  }
+  
+  .popupContainer:hover .schedulePopupMenu,
+  .schedulePopupMenu:hover {
+    display: block;
+  }
+  
+.sidebarCourses .schedulePopupMenu {
+  right: -139px;
+  top: -12px;
+}
+.schedule .schedulePopupMenu {
+  right: -130px;
+  top: -12px;
+}
+  .schedule .scheduleCourse:hover .schedulePopupMenu {
+    display: block;
+  }
+  
+#enrollmentSidebar {
+  dl {
+    margin: 0;
+    padding: 0;
+    
+    dt {
+      color: #444444;
+      font-size: 13px;
+      font-weight: bold;
+      margin: 3px 0 0 0;
+      padding: 0;
+    }
+    
+    dd {
+      margin: -1px 0 0 0;
+      padding: 2px;
+    }
+  }
+  
+  em {
+    font-size: 12px;
+    padding-top: 10px;
+  }
+}

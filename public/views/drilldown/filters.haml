@@ -1,0 +1,60 @@
+- var checkbox = $.Views.get('utils/checkbox');
+
+%table#filtersTable
+  %tr
+    %td{colspan: 2}
+      %h2 Generic Filters
+    
+  %tr
+    %td
+      = checkbox.render({name: 'fullFilter', id: 'fullFilter', checked: $.drillDownState.full})
+    %td.filterLabel.filterColumn Show full courses.
+  %tr.odd
+    %td
+      = checkbox.render({name: 'undergradFilter', id: 'undergradFilter', checked: $.drillDownState.undergrad})
+    %td.filterLabel.filterColumn Show undergraduate courses.
+  %tr
+    %td
+      = checkbox.render({name: 'gradFilter', id: 'gradFilter', checked: $.drillDownState.grad})
+    %td.filterLabel.filterColumn Show graduate courses.
+  %tr.odd
+    %td
+      = checkbox.render({name: 'emptyFilter', id: 'emptyFilter', checked: $.drillDownState.empty})
+    %td.filterLabel.filterColumn Show courses not offerred this semester.
+
+  %tr
+    %td{colspan: 2}
+      %h2 Course Time Filters
+
+  %tr
+    %td{colspan: 2}
+      %ul#timesList
+      #timesFilterContainer= timesTemplate.render()
+
+  %tr
+    %td{colspan: 2}
+      %h2 Department Filters
+    
+  %tr
+    %td{colspan: 2}
+      #departmentFiltersContainer
+        %table
+          - var size = parseInt(d.departments.list.length / 3);
+          - for c in 0..size
+            %tr{class: (c % 2 === 0 ? '' : 'odd')}
+              - for e in 0..3
+                - var tmp = c + (size*e);
+                - if tmp < d.departments.list.length
+                  - var id = d.departments.list[tmp].id;
+                  %td
+                    = checkbox.render({name: 'departmentFilter-'+id, id: 'departmentFilter-'+id, checked: $.drillDownState.departments[id], clas: 'departmentCheckbox'})
+                  %td.filterLabel= d.departments.list[tmp].name
+                - else
+                  %td
+                  %td
+                
+  %tr
+    %td.filterAllButtons{colspan: 2}
+      %a#filtersCheckAll{:href => 'javascript:void(0);'}Check All 
+      #{"/ "}
+      %a#filtersUncheckAll{:href => 'javascript:void(0);'} Uncheck All

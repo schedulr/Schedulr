@@ -1,0 +1,7 @@
+There was an error while parsing course data from novasis:
+
+<% for error in @exceptions %>
+  EXCEPTION:
+  <%= raw error.inspect %>
+  <%= raw error.backtrace.join("\n") %>
+<% end %>

@@ -1,0 +1,8 @@
+@{clas: ''}
+%span.switch
+  %label.cbEnabled{class: (checked ? 'selected' : '')}
+    %span Show
+  %label.cbDisabled{class: (checked ? '' : 'selected')}
+    %span Hide
+  %input.checkbox{:class => clas, :type => 'checkbox', :id => id, :name => name, :checked => checked ? 'checked' : ''}
+  .clear

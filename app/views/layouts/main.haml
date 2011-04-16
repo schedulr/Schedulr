@@ -1,0 +1,47 @@
+!!!
+%html{ :xmlns => "http://www.w3.org/1999/xhtml" }
+  %head
+    %meta{ :content => "text/html; charset=UTF-8", "http-equiv" => "content-type" }
+    %title Schedulr
+    %link{ :href => "/favicon.ico", :rel => "shortcut icon", :type => "image/x-icon" }
+    = partial "includes/head"
+    = csrf_meta_tag
+  %body{:class => (@nav ? 'fullNav' : 'partialNav')}
+    #top
+      #logo
+        %img{:src => image_path('/images/layout/logoExport.png')}
+      #logoTerm= Term.schedulr_term.full_name
+      #nav
+        %ul
+          - if @nav
+            %li
+              %a{:href => 'javascript:Shadowbox.open($("#tutorialLink")[0]);'}
+                %img{:src => image_path('/images/layout/help.png')}
+            %li
+              %a.changeFilters{:href => 'javascript:void(0);'}
+                %img{:src => image_path('/images/layout/filterCourses.png')}
+          %li
+            %a{:href => '/main/bugReport'}
+              %img{:src => image_path('/images/layout/reportBug.png')}
+          %li
+            %a{:href => '/main/featureRequest'}
+              %img{:src => image_path('/images/layout/featureRequest.png')}
+          %li
+            %a{:href => '/user/logout'}
+              %img{:src => image_path('/images/layout/logout.png')}
+        .clear
+    #content.content
+      - if flash[:notice]
+        #flash
+          = raw flash[:notice]
+      - if flash[:warning]
+        #flashWarning
+          = raw flash[:warning]
+        - flash.discard
+        
+      = yield :layout 
+      
+    #footer
+      Developed by <a href='http://aj.palkovic.net'>AJ Palkovic</a> and Taylor Clifton.
+
+    = partial 'includes/javascripts'

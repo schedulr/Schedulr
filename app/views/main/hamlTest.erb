@@ -1,0 +1,44 @@
+<% content_for :head do %>
+		<style type='text/css'>
+		body {
+		    font-family: Consolas;
+		}
+		dl {
+		    padding: 0;
+		    margin: 0;
+		}
+		dd {
+		    padding: 0;
+		    margin: 0;
+		    font-weight: bold;
+		}
+		dt {
+		    padding: 0 0 5px 5px;
+		    margin: 0;
+		}
+		.hamlTestTable {
+			border: 1px solid black !important;
+			border-collapse: collapse;
+			padding-bottom: 10px;
+		}
+		.hamlTestTable td {
+			border: 1px solid black !important;
+			padding: 2px !important;
+			vertical-align: top;
+		    font-size: 11px !important;
+		}
+		.hamlTestTable .hamlTestSuccess td {
+			background-color: #9f9;
+		}
+		.hamlTestTable .hamlTestFail td {
+			background-color: #f99;
+		}
+		.hamlTestTable .hamlTestLineError {
+			font-weight: bold;
+		}
+		
+		</style>
+<% end %>
+<% content_for :javascripts do %>
+  <script type='text/javascript' src='/javascripts/hamlTest.js'></script>
+<% end %>

@@ -1,0 +1,18 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  rtype: 
+  name: 
+
+two:
+  rtype: 
+  name:
+
+# == Schema Info
+# Schema version: 20110414032850
+#
+# Table name: requirements
+#
+#  id    :integer(4)      not null, primary key
+#  rtype :string(255)
+#  name  :string(255)

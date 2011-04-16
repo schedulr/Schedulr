@@ -1,0 +1,32 @@
+- if state.version < 1
+  <script type='text/javascript'>function asdfgfdsa() { Shadowbox.open($("#tutorialLink")[0]); }</script>
+  
+  %center
+    %p If this is your first time here, feel free to 
+      %a{:href => 'javascript:asdfgfdsa();'} Take the Tour.
+  %br
+  
+#helpContent
+  %p While all of you were busy doing something fun, Schedulr received somewhat of a makeover.  Beautiful ain't she? Besides its stunning new physique and appearence, Schedulr has also received some kickass upgrades:
+  %table
+  
+    -# New states go here
+    
+    - if state.version < 3
+      %tr
+        %th
+        %td <span style='color: red;'>Register your courses directly through Schedulr!</span>  Clicking Register Courses will create a single link to Novasis that will automatically fill in the information for you.  It's awesome.
+  
+    - if state.version < 2
+      %tr
+        %th
+        %td You can now share your schedules with friends and advisors, or anybody with a Villanova login.  Want your advisor's feedback on your schedule?  Share it with him.
+      %tr
+        %th
+        %td If you have a Google account, you can now export your schedules to Google Calendar.
+      %tr
+        %th
+        %td The drilldown is now more user friendly and loveable.  We added a small delay when you are selecting items to make navigation more forgiving.
+      %tr
+        %th
+        %td Schedules are now rendered in a much more consistent and glorious fashion.

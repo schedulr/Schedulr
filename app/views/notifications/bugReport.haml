@@ -1,0 +1,17 @@
+%h1 User #{@subject}
+
+%dl
+  %dt Session:
+  %dd= @session.inspect.html_safe
+
+  %dt Email:
+  %dd
+    - if @email != nil && @email.length > 0
+      = @email
+    - else
+      - person = Person.find_by_id @session[:user]
+      - if person
+        = person.email
+  
+  %dt Bug:
+  %dd= @bug

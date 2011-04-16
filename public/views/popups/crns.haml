@@ -1,0 +1,6 @@
+%table
+  - for course in courses
+    %tr
+      %th= course.sectionid+": "+course.title
+      %td
+        %input{type: 'text', value: course.crn}

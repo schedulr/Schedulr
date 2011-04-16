@@ -1,0 +1,11 @@
+%h1 Hello
+
+%p Thank you for your interest in Schedulr.
+
+%p In order to set a password on Schedulr, we need to ensure that you own this email address.
+
+%p Please click the link below, which will take you to Schedulr.
+
+%a{:href => "https://www.betterschedulr.com/user/reset_link?secret=#{@user.secret}"} https://www.betterschedulr.com/user/reset_link?secret=#{@user.secret}
+
+%p Thanks!

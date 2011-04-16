@@ -1,0 +1,40 @@
+%form
+  %label.feedbackDescription How would you rate Schedulr? (1 = Epic suckage, 5 = So awesome I wish I knew about this earlier)
+  = radios.render({name: 'rating', values: [1, 2, 3, 4, 5]})
+  
+  %label.feedbackDescription{:for => 'use_register'} Did you use the Register Courses feature?
+  = radios.render({name: 'use_register', values: $w('Yes No')})
+  
+  %label.feedbackDescription{:for => 'register_feedback'}
+    If so, did it work for you? (If not, can you explain briefly)?
+    %br
+    Do you have any feedback on that feature?
+  .textAreaWrapper
+    %textarea{:name => 'register_feedback', :rows => 3, :cols => 50}
+  
+  %label.feedbackDescription{:for => 'share_friend'} Did you share a schedule with a friend?
+  = radios.render({name: 'share_friend', values: $w('Yes No')})
+  
+  %label.feedbackDescription{:for => 'share_advisor'} Did you share a schedule with an advisor?
+  = radios.render({name: 'share_advisor', values: $w('Yes No')})
+  
+  %label.feedbackDescription{:for => 'share_feedback'}
+    If so, did it work for you? (If not, can you explain briefly)?
+    %br
+    Do you have any feedback on that feature?
+  .textAreaWrapper
+    %textarea{:name => 'share_feedback', :rows => 3, :cols => 50}
+  
+  %label.feedbackDescription{:for => 'bugs'} Have you had encounted any bugs or problems in Schedulr? (If so, please explain)
+  .textAreaWrapper
+    %textarea{:name => 'bugs', :rows => 3, :cols => 50}
+  
+  %label.feedbackDescription{:for => 'recommend'} Would you recomend Schedulr to a friend?
+  = radios.render({name: 'recommend', labels: ['Hell Yea', 'Nope', "I don't have friends."], values: $w('Yes No Yes')})
+  
+  %label.feedbackDescription{:for => 'prefer_schedulr'} Would you rather use Novasis or Schedulr for all of your course planning?
+  = radios.render({name: 'prefer_schedulr', labels: $w('Schedulr Novasis'), values: $w('Yes No')})
+  
+  %label.feedbackDescription{:for => 'feedback'} Do you have any other feedback or kickass ideas for Schedulr?
+  .textAreaWrapper
+    %textarea{:name => 'feedback', :rows => 3, :cols => 50}

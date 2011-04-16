@@ -1,0 +1,12 @@
+.subPage
+  %form{:action => '/main/featureRequest'}
+    .formArea
+      %label{:for => 'bug'}Feature Request:
+      %br
+      %strong If you can describe the idea a bit, why it would be cool to have and how it work work, I would quite appreciate it.
+      %br
+      %textarea.fullLength{:rows => 10, :cols => 50, :name => 'bug'}
+      %br
+    
+    .formControls
+      %input{:type => 'submit', :name => 'submit', :value => 'submit'}

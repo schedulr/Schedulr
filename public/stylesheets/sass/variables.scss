@@ -1,0 +1,75 @@
+@mixin closeButton {
+  background-image: url(/images/spritesExport.png?#{$version});
+  background-repeat: no-repeat;
+  background-position: left -700px;
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  top: 0px;
+  right: 0px;	
+}
+$grey: #555555;
+
+@mixin whiteTextShadow {
+  text-shadow: #FFFFFF 1px 1px 1px;
+}
+@mixin blackTextShadow {
+  text-shadow: #000000 1px 1px 1px;
+}
+
+@mixin scheduleShadow($color) {
+  box-shadow: 2px 2px 6px $color*0.5+#555;
+  -moz-box-shadow: 2px 2px 6px $color*0.5+#555;
+}
+
+@mixin scheduleColor($bg, $border:$grey, $gradientFactor:0.9) {
+  background-color: $bg;
+  background: -moz-linear-gradient(top, $bg, $bg*$gradientFactor);
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from($bg), to($bg*$gradientFactor));
+  background: linear-gradient(top, $bg, $bg*$gradientFactor);
+  border-color: $border !important;
+  text-shadow: 1px 1px $bg*1.2;
+}
+
+@mixin blackButton {
+  input[type="button"],
+  .registerLink,
+  .blackButton,
+  input[type="submit"] {
+    background: #333333 url(/images/buttonGradiant.png?#{$version}) repeat-x;
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0,0.25);
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    color: #FFFFFF; 
+    cursor: pointer;
+    display: inline-block;
+    font-family: Arial;
+    font-weight: bold;
+    font-size: 13px;
+    padding: 3px 6px 4px; 
+    position: relative;
+    margin: 0 3px;
+    text-decoration: none;
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+  }
+  
+  input[type="button"]:hover,
+  .registerLink:hover,
+  .blackButton:hover,
+  input[type="submit"]:hover {
+    background-color: #000000;
+    color: #CCCCCC;
+  }
+  
+  input[type="button"]:active,
+  .registerLink:active,
+  .blackButton:active,
+  input[type="submit"]:active {
+    top: 1px;
+  }
+}
+
+$version: 1302145525;

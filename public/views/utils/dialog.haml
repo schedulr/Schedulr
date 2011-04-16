@@ -1,0 +1,10 @@
+.messageBoxInnerContainer{:class => dialog.classes}
+  %a.closeButton{:href => 'javascript:void(0);'}
+  - if dialog.title
+    %h2= dialog.title
+  
+  .messageBoxContent
+  
+  .messageBoxButtons
+    - for(var key in dialog.buttons)
+      %input.messageBoxButton{:type => 'button', :value => key}

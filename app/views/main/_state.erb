@@ -1,0 +1,17 @@
+window.state = {};
+<% 
+require 'jsobject.rb'
+%>
+
+<% schedules = @schedules.map do |schedule|
+  courses = schedule.course_sections.map {|course| "d.sections[#{course.id}]"}
+  "{id: #{schedule.id}, name: '#{e schedule.name}', courses: [#{courses.join(',')}]}"
+end %>
+
+state.schedules = [<%= raw schedules.join(',') %>];
+state.courses = [<%= raw(@schedules.map{|schedule| schedule.course_sections}.flatten.uniq.map{|course| "d.sections[#{course.id}]"}.join(',')) %>];
+state.viewed_message = <%= @person.viewed_message %>;
+state.version = <%= @person.version %>;
+state.state = <%= raw (@person.state || "{}") %>;
+state.feedback = <%= Feedback.where({:person_id => @person.id}).count > 0 %>;
+state.firstVisit = <%= Person.last.id - @person.id < 5 %>;

@@ -1,0 +1,31 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  course_section_id: 
+  start_hour: 
+  start_minute: 
+  day: 
+  end_hour: 
+  end_minute: 
+
+two:
+  course_section_id: 
+  start_hour: 
+  start_minute: 
+  day: 
+  end_hour: 
+  end_minute:
+
+# == Schema Info
+# Schema version: 20110414032850
+#
+# Table name: course_section_times
+#
+#  id                :integer(4)      not null, primary key
+#  course_section_id :integer(4)
+#  start_hour        :integer(4)
+#  start_minute      :integer(4)
+#  day               :integer(4)
+#  end_hour          :integer(4)
+#  end_minute        :integer(4)
+#  location          :string(255)

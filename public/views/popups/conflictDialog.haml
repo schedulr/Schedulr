@@ -1,0 +1,34 @@
+.conflictColumn
+  %h3 These courses are conflicted:
+  %ul.conflictedCourses.actionList
+    - for course in slot.courses
+      %li
+        %span.conflictedCourseName #{course.course.courseid}, offered from 
+        %span.conflictedCourseTime= course.ddt
+
+.conflictColumn
+  %h3 What would you like to do:
+  %ul.conflictedActions.actionList.actionHoverList
+    %li.ignoreConflictAction Ignore Conflict
+    - for course in slot.courses using c
+      %li{class: "showConflictPanel-"+c} Move #{course.course.courseid}
+    %li{class: "showConflictPanel-"+c} Remove a Course
+
+.conflictColumn
+  - for course in slot.courses using c
+    %div{class: 'conflictPanel-'+c, style: 'display: none;'}
+      %h3 Move #{course.course.courseid}:
+      %ul.conflictedSubActions.actionList.actionHoverList
+        - for section in course.course.sections using d
+          - var clas = section.id === course.id ? 'conflictCurrentSection' : 'moveCourse-'+c+'-'+d;
+          - if schedule.isConflict(section)
+            - clas += ' conflict'
+          %li{class: clas}= section.ddt
+          
+  %div{class: 'conflictPanel-'+c, style: 'display: none;'}
+    %h3 Remove a Course:
+    %ul.conflictedSubActions.actionList.actionHoverList
+      - for course in slot.courses using d
+        %li{class: 'removeCourse-'+d} Remove #{course.course.courseid}
+
+.clear

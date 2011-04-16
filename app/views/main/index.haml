@@ -1,0 +1,27 @@
+- content_for :javascripts do
+  %script{:type => 'text/javascript'}
+    = partial 'state'
+    $(document).ready(function() {
+    setupSchedule(jQuery);
+    $('#loadingMessage').remove();
+    });
+
+#loadingMessage
+  %h1 The website is loading.
+  I'm not cool like Gmail.  There's no progress bar here.  This message will just have to suffice.
+  %br
+  Note: If this message does not go away after a minute, something is wrong.
+  I would suggest pressing Ctrl-Shift-R to do a 'forced refresh' of the browser.  Closing and restarting the browser might help too.
+  If you still have problems, shoot me an email via the Report a Bug menu.
+
+= partial 'includes/tutorial'
+
+#searchDiv
+  %input#search{:type => 'text', :name => 'search', :value => 'Search Courses'}
+      
+#drillDownContainer
+#drillDownStatus{:style => 'display: none;'} &nbsp;
+#scheduleContainer
+.clear
+#scheduleSaved{:style => 'display: none;'} Your schedule has been saved successfully .
+#blackBox{:style => 'display: none;'}

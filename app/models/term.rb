@@ -1,0 +1,80 @@
+# == Schema Info
+# Schema version: 20110414032850
+#
+# Table name: terms
+#
+#  id         :integer(4)      not null, primary key
+#  termid     :string(255)
+#  code       :string(255)
+#  year       :string(255)
+#  semester   :string(255)
+#  start_date :date
+#  end_date   :date
+#  active     :boolean(1)
+
+class Term < ActiveRecord::Base
+  #the name in this case is just the semester and year.  it does not distinguish between summer sessions
+  def name
+    "#{semester} #{year}"
+  end
+  
+  #returns the name of the semester along with the specific summer session if applicable
+  def full_name
+    name
+  end
+  
+  #returns every term in the database that we have course schedule information for
+  def self.available_terms
+    self.find :all, :conditions => ['section_info = ?', 'available'], :group => 'semester, year', :order => 'id DESC'
+  end
+  
+  #returns the term that we are currently in
+  def self.current_term
+    today = Date.today
+    self.find :first, :conditions => ['start_date <= ? AND end_date >= ?', today, today]
+  end
+  
+  #returns the term that is used for registration purposes
+  def self.schedulr_term(force=false)
+    term = self.where(:active => true).first
+    return term if term
+    
+    term = self.current_term
+    if force || 60.days.since(term.start_date) <= Date.today
+      nextYear, nextSemester = term.year.to_i, 'Fall'
+      nextYear, nextSemester = term.year.to_i+1, 'Spring' if term.semester == 'Fall'
+      term = self.first :conditions => ['year = ? AND semester = ?', nextYear, nextSemester]
+    end
+    term
+  end
+  
+  # inserts the term that follows this term by making a copy of the previous
+  def make_next
+    next_term = Term.new
+    nextYear, nextSemester = year.to_i, 'Fall'
+    nextYear, nextSemester = year.to_i+1, 'Spring' if semester == 'Fall'
+    
+    existing_term = Term.where(['year = ? AND semester = ?', nextYear, nextSemester]).first
+    return if existing_term
+    
+    previous_term = Term.where(['year = ? AND semester = ?', nextYear-1, nextSemester]).first
+    
+    next_term.start_date = previous_term.start_date+1.year
+    next_term.end_date = previous_term.end_date+1.year
+    next_term.year = nextYear
+    next_term.semester = nextSemester
+    next_term.active = false
+    
+    if nextSemester == 'Fall'
+      next_term.code = "#{next_term.year.to_i+1}20"
+      next_term.termid = "F#{(next_term.year)%100}"
+    else
+      next_term.termid = "S#{(next_term.year.to_i)%100}"
+      next_term.code = "#{next_term.year}30"
+    end
+    
+    next_term.save
+    
+    next_term
+  end
+end

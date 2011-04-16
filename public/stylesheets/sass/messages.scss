@@ -1,0 +1,33 @@
+@import "variables";
+
+.messageBox {
+  position: fixed;
+  z-index: 999;
+  
+  .dropShadowContent {
+  }
+    .messageBoxInnerContainer {
+      position: relative;
+      
+      .closeButton {
+        @include closeButton;
+        top: -15px;
+        right: -15px;
+      }
+    }
+    
+    .messageBoxButtons {
+      border-top: 1px solid #DDD;
+      margin-top: 20px;
+      padding-top: 2px;
+      text-align: center;
+    }
+    
+    @include blackButton;
+    
+    h3 {
+      color: #000000;
+      margin-bottom: 5px;
+      text-align: left;
+    }
+}

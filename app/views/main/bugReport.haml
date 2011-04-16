@@ -1,0 +1,15 @@
+.subPage
+  %form{:action => '/main/bugReport'}
+    .formArea
+      %label{:for => 'email'}Email: (in case I need to follow up)
+      %br
+      %input.fullLength{:type => 'text', :name => 'email'}
+      %br
+    
+      %label{:for => 'bug'}Bug: (Please be descriptive and try and give some steps to reproduce the bug you found if possible)
+      %br
+      %textarea.fullLength{:rows => 10, :cols => 50, :name => 'bug'}
+      %br
+    
+    .formControls
+      %input{:type => 'submit', :name => 'submit', :value => 'submit'}

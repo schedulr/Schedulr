@@ -1,0 +1,52 @@
+%h3= h(name)
+
+.scheduleInnerContainer{:style => 'height: '+height+'px'}
+  .credits Credits: #{credits}
+  
+  - var days = $w('Monday Tuesday Wednesday Thursday Friday');
+    -# render the day headings at the top
+    - for day in days using c
+      .scheduleCell.scheduleDay{:class => 'scheduleColumn'+(c+1), :style => 'top: 6px;'}= day
+        
+  - if endTime.hours === 0
+    %div{:style => 'position: absolute; top: 28px; left: 70px;'} Whoa, goin for a light load?  You ain't got any of 'em learnin things on your schedule yet!
+
+  - else
+    -# Print time labels
+    - var time = startTime;
+    - while(time.compareTo(endTime) < 0)
+      - var position = offset({start: time, end: endTime});
+      .scheduleCell.scheduleTime.column0{:style => 'top: '+position.offset+'px;'}= time.toString()
+      .scheduleHourMark{:style => 'top: '+position.offset+'px;'}
+      - time.hours += 1;
+      - time.update();
+      
+    -# Print Time Filters
+    - for obj in otherObjs
+      - var options = {};
+      - var position = offset(obj.date, 1);
+      - options['class'] = 'scheduleCell scheduleColumn'+(obj.date.day+1)+' '+obj['class'];
+      - options['style'] = 'top: '+position.offset+'px; height: '+position.height+'px;';
+        
+      %div{options}
+        %div{:style => 'padding-top: '+position.padding+'px;'}= obj.label
+  
+    -# Print schedule cells
+    - var uid = 0;
+    - for slot in slots using c
+      - for time in slot.slot.dates using d
+        - var options = {};
+        - var position = offset(time, slot.courses.length);
+        - options['class'] = 'scheduleCell scheduleCourse scheduleColumn'+(time.day+1);
+        - options['class'] += ' scheduleColor-'+color(slot.courses);
+        - options['style'] = 'top: '+position.offset+'px; height: '+position.height+'px;';
+        - options['data-scheduleSlot'] = c;
+        - if(slot.courses.length > 1)
+          - options['class'] += " scheduleConflict";
+        - options.id = "scheduleSlotId-"+(uid++);
+          
+        %div{options}
+          .popupContainer
+            = popup.render({items: items[c]})
+          .scheduleCourseInner{:style => 'padding-top: '+position.padding+'px;'}
+            = slot.courses.pluck('sectionid').join('<br />')

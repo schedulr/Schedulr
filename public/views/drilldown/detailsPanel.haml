@@ -1,0 +1,60 @@
+%ul.drillDownList      
+  - for link in links using c
+    %li.drillDownRow
+      %a{id: 'ddrDetailsLink-'+index+'-'+c, href: 'javascript:void(0);'}= link.text
+  
+  %dl
+    - if(item.courseid)
+      %dt: Course:
+      %dd= item.courseid
+      
+      %dt: Title
+      %dd= h(item.title)
+      
+    - else
+      %dt Course:
+      %dd= item.sectionid+": "+h(item.title)
+    
+      %dt Instructor:
+      %dd= h(item.instructors.pluck('name').join(', '))
+    
+      %dt Meeting Times:
+      %dd= item.ddt
+    
+      %dt Location:
+      %dd= ''
+    
+      - if(item.course.credits.length > 0)
+        %dt Credits:
+        %dd= h(item.course.credits)
+    
+      - if(item.course.description.length > 0)
+        %dt Description:
+        %dd= h(item.course.description)
+        
+      - if(item.restrictions.length > 0)
+        %dt Restrictions:
+        %dd= h(item.restrictions)
+    
+      - if(item.prerequisites.length > 0)
+        %dt Prerequisites:
+        %dd= h(item.prerequisites)
+    
+      - if(item.notes.length > 0)
+        %dt Notes:
+        %dd= h(item.notes)
+    
+      - if(item.comment.length > 0)
+        %dt Comment:
+        %dd= h(item.comment)
+    
+      - if $.enrollment && $.enrollment[item.id]
+        %dt Enrollment:
+        %dd
+          = $.enrollment[item.id].join(' of ')
+          &nbsp;students
+    
+      - var reqStr = item.requirements.pluck('name').join(', ');
+      - if(reqStr.length > 0)
+        %dt Requirements:
+        %dd= reqStr

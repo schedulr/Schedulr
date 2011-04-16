@@ -1,0 +1,19 @@
+<% 
+require 'jsobject.rb'
+
+myShared = @myShared.map do |schedule|
+  emails = schedule.people.map{|person| person.email}
+  schedule.shares.each{|share| emails << share.email}
+  emails = emails.map{|email| "'#{e email}'"}
+  "{id: #{schedule.id}, emails: [#{emails.join(',')}]}"
+end
+  
+sharedWithMe = @sharedWithMe.map do |schedule|
+  courses = schedule.course_sections.map {|course| "schedulrData.sections[#{course.id}]"}
+  "{id: #{schedule.id}, name: '#{e schedule.name}', courses: [#{courses.join(',')}], sharer: '#{e schedule.person.full_name}'}"
+end
+
+%>
+
+state.myShared = [<%= raw myShared.join(',') %>];
+state.sharedWithMe = [<%= raw sharedWithMe.join(',') %>];

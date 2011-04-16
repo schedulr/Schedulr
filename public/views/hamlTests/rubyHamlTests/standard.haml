@@ -1,0 +1,42 @@
+%html{xmlns: "http://www.w3.org/1999/xhtml", "xml:lang": "en-US", "lang": "en-US"}
+  %head
+    %title Hampton Catlin Is Totally Awesome
+    %meta{"http-equiv": "Content-Type", content: "text/html; charset=utf-8"}
+  %body
+    -# You're In my house now!
+    .header
+      Yes, ladies and gentileman. He is just that egotistical.
+      Fantastic! This should be multi-line output 
+      The question is if this would translate! Ahah!
+      = 1 + 9 + 8 + 2 //numbers should work and this should be ignored
+    #body= " Quotes should be loved! Just like people!"
+    - for number in 0..12
+      = number
+    Wow.|
+
+    %p
+      = "Holy cow        " + |
+        "multiline       " + |      
+        "tags!           " + |
+        "A pipe (|) event!"  |
+      = $.map([1, 2, 3], function(n) { return "PipesIgnored|" }).join('')
+      = $.map([1, 2, 3], function(n) {     |
+          return n+"";                      |
+        }).join("|")                        |
+    %div.silent
+      - var foo = "";
+      - foo += "this";
+      - foo += " shouldn't";
+      - foo += " evaluate";
+      = foo + " but now it should!"
+      -// Woah crap a comment!
+
+    -// That was a line that shouldn't close everything.
+    %ul.really.cool
+      - for a in $w('a b c d e f')
+        %li= a
+    - var should_eval;
+    #combo.of_divs_with_underscore= should_eval = "with this text"
+    - null;
+    = null
+    .footer

@@ -1,0 +1,18 @@
+#shareForm
+  %label{:for => 'email'} Email:
+  %input#shareEmail{:type => 'text', :name => 'email', :size => 30}
+  %input#shareButton{:type => 'button', :value => 'Share'}
+  
+#sharedWith
+  %br
+  %h2 Shared Users
+  - if emails.length > 0
+    %table
+      - for email in emails
+        %tr
+          %td= h(email)
+          %td{:style => 'text-align: right;'}
+            %input.removeLink{:type => 'button', :value => 'Remove'}
+  - else
+    %em This schedule isn't shared with anyone.
+  

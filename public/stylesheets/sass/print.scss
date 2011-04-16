@@ -1,0 +1,36 @@
+#footer,
+#top,
+#schedulrHeader,
+#tutorialSlides,
+#scheduleTop,
+#drillDownContainer,
+#drillDownStatus,
+.scheduleSidebar,
+#enrollmentSidebar,
+#searchDiv,
+#sb-container,
+.schedulePopupMenu,
+#noticeDiv,
+#blackBox,
+#scheduleSaved,
+.credits,
+.filteredTime,
+.alert {
+  display: none !important;
+}
+
+@import "variables";
+@import "main";
+@import "schedule";
+
+body {
+  background: none !important;
+  min-width: 10px !important;
+}
+.dropShadowDiv {
+  background: none !important;
+}
+* {
+  box-shadow: none !important;
+  -moz-box-shadow: none !important;
+}

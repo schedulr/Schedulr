@@ -1,0 +1,41 @@
+.sidebar
+  %h3 Courses
+  %ul.sidebarCourses
+    - if zippedCurrent.length > 0
+      - for zip in zippedCurrent
+        - var index = zip[1], course = zip[0];
+        %li.popupContainer.sidebarCourse{class: 'scheduleColor-'+colors([course]), 'data-sidebarCourseId': index}
+          = course.sectionid
+          = popup.render({items: items[index]})
+    - else
+      %li.noCourses No Courses Scheduled
+      
+  - if zippedAll.length > 0
+    %h3 Other Courses
+    %ul.sidebarCourses
+      - for zip in zippedAll
+        - var index = zip[1], course = zip[0];
+        %li.popupContainer.sidebarCourse{class: 'scheduleColor-'+colors([course]), 'data-sidebarCourseId': index}
+          = course.sectionid
+          = popup.render({items: items[index]})
+    
+  %h3 Actions
+  %ul#sidebarActions.actionList.actionHoverList
+    -#%li#registerSchedule
+    -#  %a{href: 'javascript:void(0);'} Register Courses
+    %li#shareSchedule
+      %a{href: 'javascript:void(0);'} Share Schedule
+    %li#showCrns
+      %a{href: 'javascript:void(0);'} Show CRNs
+    %li#blankSchedule
+      %a{href: 'javascript:void(0);'} New Blank Schedule
+    %li#copySchedule
+      %a{href: 'javascript:void(0);'} Copy to New Schedule
+    %li#removeSchedule
+      %a{href: 'javascript:void(0);'} Delete Schedule
+    %li#renameSchedule
+      %a{href: 'javascript:void(0);'} Rename Schedule
+    %li#printSchedule
+      %a{href: 'javascript:void(0);'} Print Schedule
+    %li#exportSchedule
+      %a#loginText{href: 'javascript:void(0);'} <span style="color: #EB1047">Beta!</span> Export schedule to Google Calendar

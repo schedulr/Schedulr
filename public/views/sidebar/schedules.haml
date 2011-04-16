@@ -1,0 +1,15 @@
+.sidebar
+  %h3 Schedules
+  %ul.sidebarSchedules.actionList.actionHoverList
+    - for schedule in schedules using c
+      %li.sidebarSchedule{'data-sidebarScheduleId': c, class: (c === currentScheduleIndex ? 'activeSchedule' : '')}
+        %a{href: 'javascript:void(0);'}= h(schedule.name)
+
+  %h3 Shared Schedules
+  - if shared.length > 0
+    %ul.sidebarSchedules.actionList.actionHoverList
+      - for schedule in shared using c
+        %li.sidebarSchedule{'data-sidebarScheduleId': c+schedules.length, class: (c+schedules.length === currentScheduleIndex ? 'activeSchedule' : '')}
+          %a{href: 'javascript:void(0);'}= h(schedule.shareName())
+  - else
+    No one has shared anything with you :(

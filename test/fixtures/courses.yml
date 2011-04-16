@@ -1,0 +1,33 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  department_id: 
+  number: 
+  title: 
+  crn: 
+  instructor_id: 
+  comment: 
+  attributes: 
+  restrictions: 
+
+two:
+  department_id: 
+  number: 
+  title: 
+  crn: 
+  instructor_id: 
+  comment: 
+  attributes: 
+  restrictions:
+
+# == Schema Info
+# Schema version: 20110414032850
+#
+# Table name: courses
+#
+#  id            :integer(4)      not null, primary key
+#  department_id :integer(4)
+#  number        :integer(4)
+#  courseid      :string(255)
+#  description   :text
+#  credits       :string(255)

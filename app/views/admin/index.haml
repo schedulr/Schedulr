@@ -1,0 +1,46 @@
+#admin
+  %h2 Add an Admin (By Email)
+  = form_for :person, :url => {:action => 'admin'} do |form|
+    = form.text_field :email
+    = form.submit
+    
+  %h2 Is God Running?
+  = @god ? 'Yes' : 'No'
+  %p Enrollment last run: #{time_ago_in_words @enrollmentMtime} ago.
+  %p Parser last run: #{time_ago_in_words @dataMtime} ago.
+  
+  %h2 Misc
+  %ul
+    %li= link_to 'Delete Schedules', {:action => 'confirm_empty'}
+    %li= link_to 'Delete Course Data and Schedules', {:action => 'confirm_empty', :all => true}
+    %li= link_to 'Run Parser (Run as Background Job)', {:action => 'parser'}
+    %li= link_to 'Reboot God', {:action => 'reboot_god'}
+    %li
+      %a{:href => 'http://phpmyadmin.schedulr.org'} Phpmyadmin
+  
+  %h2 Terms
+  %table
+    %tr
+      %th Id
+      %th Active?
+      %th Term
+      %th Start
+      %th End
+      %th
+      %th
+      %th
+    - for term in @terms
+      %tr
+        %td= term.id
+        %td= term.active ? 'Yes' : 'No'
+        %td
+          %strong #{term.semester} #{term.year}
+        %td
+          = form_for term, :url => {:action => 'edit_term', :id => term.id} do |form|
+            = form.text_field :start_date
+        %td
+          = form_for term, :url => {:action => 'edit_term', :id => term.id} do |form|
+            = form.text_field :end_date
+        %td= link_to 'Make Active', :action => 'active', :id => term.id
+        %td= link_to 'Add Next Semester', :action => 'next_term', :id => term.id
+        %td= link_to 'Delete', :action => 'destroy', :id => term.id

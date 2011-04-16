@@ -1,0 +1,31 @@
+%br
+.stepOne
+  %h3 Step One - Login in to Novasis
+  %p Click the link below to login to Novasis.  You must do this if you have been inactive for more than 30 minutes.
+  %a{:href => 'https://novasis.villanova.edu/pls/bannerprd/twbkwbis.P_WWWLogin', :target => '_blank'} https://novasis.villanova.edu/pls/bannerprd/twbkwbis.P_WWWLogin
+  .stepButton
+    %input.stepOneButton{:type => 'button', :value => 'Next'}
+
+.stepTwo{:style => 'display: none;'}
+  %h3 Step Two - Enter Your Pin
+  %p If you have not recently entered your pin, enter it by clicking the link below:
+  - var url = "https://novasis.villanova.edu/pls/bannerprd/bwskfreg.P_AltPin?term_in="+schedulrData.terms.current.code;
+  %a{:href => url, :target => '_blank'}= url
+  .stepButton
+    %input.stepTwoButton{:type => 'button', :value => 'Next'}
+
+.stepThree{:style => 'display: none;'}
+  %h3 Step Three - Register
+  %p Click the checkboxes next to the courses you want to register (by default all are selected).  Then click the stupidly large link below.  If there is an error, Novasis will let you know.
+  %table
+    - for course in courses using c
+      %tr
+        %th
+          %input{:type => 'checkbox', :value => c, :checked => true}
+        %td= course.crn
+        %td= course.title
+        
+  %p.registerText
+  %center
+    %div.registerContainer
+      %a.registerLink{:href => '', :target => '_blank'} Click to Register Courses

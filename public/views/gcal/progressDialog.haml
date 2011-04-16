@@ -1,0 +1,12 @@
+%div
+  %center
+    %div{:style => "width: 100px; height: 100px"}
+      %img.result{:style => "display: none"}
+      - if $.browser.msie && $.browser.version < 9
+        %img.spinner{:src => image_path("/images/spinner_fast.gif")}
+      - else
+        %canvas.spinner{:width => "100px", :height => "100px"}
+%div
+  %center
+    %p.status
+      Exporting schedule to Google Calendar...

@@ -1,0 +1,6 @@
+%div
+  %center
+    <img src="#{image_path('/images/failure.png')}" />
+    %div{:style => "margin-top: 10px"}
+      #{errorMessage}
+      %iframe#htmlError{:style => "display: hidden; width: 500px; height: 150px; overflow: auto"}

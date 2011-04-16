@@ -1,0 +1,22 @@
+%table
+  %tr
+    %td Hide courses
+    %td
+      %input{type: 'radio', name: 'interval', value: 'before', checked: true} start before <br />
+      %input{type: 'radio', name: 'interval', value: 'during'} during <br />
+      %input{type: 'radio', name: 'interval', value: 'after'} end after
+    %td
+      %input{type: 'text', name: 'startTime', value: '8:00 AM'}
+      #endTimeBox{style: 'display: none;'} 
+        and <br />
+        %input{type: 'text', name: 'endTime', value: '8:00 AM'}
+    %td 
+      on 
+    %td
+      %input{type: 'checkbox', name: 'monday', checked: 'checked'} Monday <br />
+      %input{type: 'checkbox', name: 'tuesday', checked: 'checked'} Tuesday <br />
+      %input{type: 'checkbox', name: 'wednesday', checked: 'checked'} Wednesday <br />
+      %input{type: 'checkbox', name: 'thursday', checked: 'checked'} Thursday <br />
+      %input{type: 'checkbox', name: 'friday', checked: 'checked'} Friday
+    %td
+      %input#addTimeButton{type: 'submit', value: 'Add'}

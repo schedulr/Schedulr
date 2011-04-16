@@ -1,0 +1,20 @@
+%h1 Javascript Errors
+%p User: #{@user}
+
+- @errors.each do |key, error|
+  - Rails.logger.debug error.inspect
+  %br
+  %h2 Error:
+  %dl
+  
+    - error.each do |property, value|
+      %dt= property
+      %dd
+        - if property.to_s == 'stacktrace'
+          - for line in value
+            = line
+            %br
+        - else
+          = value
+
+  = error.inspect

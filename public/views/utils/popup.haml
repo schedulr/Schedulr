@@ -1,0 +1,20 @@
+.schedulePopupMenu.dropShadow
+  %table
+    %tr
+      %td.topLeft
+      %td.top
+      %td.topRight
+      
+    %tr
+      %td.left
+      %td.center
+        %ul.drillDownList
+          - for item in items using c
+            %li{class: item.disabled ? 'drillDownRow disabled' : 'drillDownRow'}
+              %a{'data-index': c, href: 'javascript:void(0);'}= item.text
+      %td.right
+      
+    %tr
+      %td.bottomLeft
+      %td.bottom
+      %td.bottomRight

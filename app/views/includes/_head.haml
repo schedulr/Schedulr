@@ -1,0 +1,8 @@
+- unless Rails.env == 'production'
+  = stylesheet_link_tag 'reset', 'aristo', 'main', 'dropShadow', 'drilldown', 'schedule', 'shadowbox', 'messages', 'messagesImpl'
+- else 
+  = stylesheet_link_tag 'stylesheets'
+
+= stylesheet_link_tag 'print', :media => 'print'
+
+= yield :head

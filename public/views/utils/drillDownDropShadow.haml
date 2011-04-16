@@ -1,0 +1,18 @@
+- if $.browser.msie && $.browser.version < 9
+  .dropShadow
+    %table
+      %tr
+        %td.topLeft 
+        %td.top 
+        %td.topRight
+      %tr
+        %td.left
+        %td.center.dropShadowContent
+        %td.right
+      %tr
+        %td.bottomLeft
+        %td.bottom
+        %td.bottomRight
+- else
+  .dropShadowDiv
+    .dropShadowContent
