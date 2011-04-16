@@ -1,18 +1,10 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+department_1:
+  code: CSC
+  id: 1
+  name: Computer Science
 
-one:
-  code: 
-  name: 
+department_2:
+  code: COM
+  id: 2
+  name: Communication
 
-two:
-  code: 
-  name:
-
-# == Schema Info
-# Schema version: 20110414032850
-#
-# Table name: departments
-#
-#  id   :integer(4)      not null, primary key
-#  code :string(255)
-#  name :string(255)

@@ -1,17 +1,6 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+schedule_1:
+  gcal_id: nil
+  id: 1
+  name: My Schedule
+  person_id: 1
 
-one:
-  user_id: 1
-
-two:
-  user_id: 1
-
-# == Schema Info
-# Schema version: 20110414032850
-#
-# Table name: schedules
-#
-#  id        :integer(4)      not null, primary key
-#  person_id :integer(4)
-#  name      :string(255)     default("")
-#  gcal_id   :string(255)

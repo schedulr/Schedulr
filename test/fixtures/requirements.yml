@@ -1,18 +1,70 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+requirement_1:
+  id: 1
+  name: Writing Enriched
+  rtype: nil
 
-one:
-  rtype: 
-  name: 
+requirement_2:
+  id: 2
+  name: Writing Intensive
+  rtype: nil
 
-two:
-  rtype: 
-  name:
+requirement_3:
+  id: 3
+  name: Fine Arts
+  rtype: nil
 
-# == Schema Info
-# Schema version: 20110414032850
-#
-# Table name: requirements
-#
-#  id    :integer(4)      not null, primary key
-#  rtype :string(255)
-#  name  :string(255)
+requirement_4:
+  id: 4
+  name: Diversity One
+  rtype: nil
+
+requirement_5:
+  id: 5
+  name: Diversity Two
+  rtype: nil
+
+requirement_6:
+  id: 6
+  name: Diversity Three
+  rtype: nil
+
+requirement_7:
+  id: 7
+  name: Arab Islamic Studies
+  rtype: nil
+
+requirement_8:
+  id: 8
+  name: Africana Studies
+  rtype: nil
+
+requirement_9:
+  id: 9
+  name: Peace and Justice
+  rtype: nil
+
+requirement_10:
+  id: 10
+  name: Gender and Women's Studies
+  rtype: nil
+
+requirement_11:
+  id: 11
+  name: Advanced Literature
+  rtype: nil
+
+requirement_12:
+  id: 12
+  name: Advanced History
+  rtype: nil
+
+requirement_13:
+  id: 13
+  name: Advanced Theology
+  rtype: nil
+
+requirement_14:
+  id: 14
+  name: Advanced Philosophy
+  rtype: nil
+

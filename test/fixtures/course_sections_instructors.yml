@@ -1,17 +1,24 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+course_sections_instructors_1:
+  course_section_id: 1
+  instructor_id: 1
 
-one:
-  course_section_id: 
-  instructor_id: 
+course_sections_instructors_2:
+  course_section_id: 2
+  instructor_id: 2
 
-two:
-  course_section_id: 
-  instructor_id:
+course_sections_instructors_3:
+  course_section_id: 3
+  instructor_id: 1
 
-# == Schema Info
-# Schema version: 20110414032850
-#
-# Table name: course_sections_instructors
-#
-#  course_section_id :integer(4)
-#  instructor_id     :integer(4)
+course_sections_instructors_4:
+  course_section_id: 4
+  instructor_id: 3
+
+course_sections_instructors_5:
+  course_section_id: 5
+  instructor_id: 4
+
+course_sections_instructors_6:
+  course_section_id: 6
+  instructor_id: 5
+

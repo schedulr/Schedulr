@@ -1,18 +1,25 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+instructor_1:
+  email: barbara.zimmerman@villanova.edu
+  id: 1
+  name: Barbara H. Zimmerman
 
-one:
-  name: 
-  email: 
+instructor_2:
+  email: mary.papalaskari@villanova.edu
+  id: 2
+  name: Mary A. Papalaskari
 
-two:
-  name: 
-  email:
+instructor_3:
+  email: katie.richardson327@yahoo.com
+  id: 3
+  name: Kathryn I. Richardson
 
-# == Schema Info
-# Schema version: 20110414032850
-#
-# Table name: instructors
-#
-#  id    :integer(4)      not null, primary key
-#  name  :string(255)
-#  email :string(255)
+instructor_4:
+  email: kermit.moore@villanova.edu
+  id: 4
+  name: Kermit P. Moore
+
+instructor_5:
+  email: james.mccloskey@villanova.edu
+  id: 5
+  name: James McCloskey
+

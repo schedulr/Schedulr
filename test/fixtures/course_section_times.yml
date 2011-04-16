@@ -1,31 +1,170 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+course_section_time_1:
+  course_section_id: 1
+  day: 0
+  end_hour: 12
+  end_minute: 20
+  id: 1
+  location: TBA
+  start_hour: 10
+  start_minute: 30
 
-one:
-  course_section_id: 
-  start_hour: 
-  start_minute: 
-  day: 
-  end_hour: 
-  end_minute: 
+course_section_time_2:
+  course_section_id: 1
+  day: 1
+  end_hour: 10
+  end_minute: 50
+  id: 2
+  location: TBA
+  start_hour: 10
+  start_minute: 0
 
-two:
-  course_section_id: 
-  start_hour: 
-  start_minute: 
-  day: 
-  end_hour: 
-  end_minute:
+course_section_time_3:
+  course_section_id: 1
+  day: 3
+  end_hour: 10
+  end_minute: 50
+  id: 3
+  location: TBA
+  start_hour: 10
+  start_minute: 0
 
-# == Schema Info
-# Schema version: 20110414032850
-#
-# Table name: course_section_times
-#
-#  id                :integer(4)      not null, primary key
-#  course_section_id :integer(4)
-#  start_hour        :integer(4)
-#  start_minute      :integer(4)
-#  day               :integer(4)
-#  end_hour          :integer(4)
-#  end_minute        :integer(4)
-#  location          :string(255)
+course_section_time_4:
+  course_section_id: 2
+  day: 0
+  end_hour: 16
+  end_minute: 15
+  id: 4
+  location: TBA
+  start_hour: 15
+  start_minute: 0
+
+course_section_time_5:
+  course_section_id: 2
+  day: 2
+  end_hour: 16
+  end_minute: 15
+  id: 5
+  location: TBA
+  start_hour: 15
+  start_minute: 0
+
+course_section_time_6:
+  course_section_id: 2
+  day: 4
+  end_hour: 10
+  end_minute: 20
+  id: 6
+  location: TBA
+  start_hour: 9
+  start_minute: 30
+
+course_section_time_7:
+  course_section_id: 3
+  day: 1
+  end_hour: 12
+  end_minute: 45
+  id: 7
+  location: TBA
+  start_hour: 11
+  start_minute: 30
+
+course_section_time_8:
+  course_section_id: 3
+  day: 3
+  end_hour: 12
+  end_minute: 45
+  id: 8
+  location: TBA
+  start_hour: 11
+  start_minute: 30
+
+course_section_time_9:
+  course_section_id: 3
+  day: 4
+  end_hour: 11
+  end_minute: 20
+  id: 9
+  location: TBA
+  start_hour: 10
+  start_minute: 30
+
+course_section_time_10:
+  course_section_id: 4
+  day: 0
+  end_hour: 19
+  end_minute: 50
+  id: 10
+  location: TBA
+  start_hour: 18
+  start_minute: 0
+
+course_section_time_11:
+  course_section_id: 4
+  day: 2
+  end_hour: 19
+  end_minute: 50
+  id: 11
+  location: TBA
+  start_hour: 18
+  start_minute: 0
+
+course_section_time_12:
+  course_section_id: 5
+  day: 0
+  end_hour: 10
+  end_minute: 20
+  id: 12
+  location: TBA
+  start_hour: 9
+  start_minute: 30
+
+course_section_time_13:
+  course_section_id: 5
+  day: 2
+  end_hour: 10
+  end_minute: 20
+  id: 13
+  location: TBA
+  start_hour: 9
+  start_minute: 30
+
+course_section_time_14:
+  course_section_id: 5
+  day: 4
+  end_hour: 10
+  end_minute: 20
+  id: 14
+  location: TBA
+  start_hour: 9
+  start_minute: 30
+
+course_section_time_15:
+  course_section_id: 6
+  day: 0
+  end_hour: 9
+  end_minute: 20
+  id: 15
+  location: TBA
+  start_hour: 8
+  start_minute: 30
+
+course_section_time_16:
+  course_section_id: 6
+  day: 2
+  end_hour: 9
+  end_minute: 20
+  id: 16
+  location: TBA
+  start_hour: 8
+  start_minute: 30
+
+course_section_time_17:
+  course_section_id: 6
+  day: 4
+  end_hour: 9
+  end_minute: 20
+  id: 17
+  location: TBA
+  start_hour: 8
+  start_minute: 30
+

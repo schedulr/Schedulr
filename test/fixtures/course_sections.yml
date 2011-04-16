@@ -1,28 +1,136 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+section1:
+  capacity: 0
+  comment: 
+  course_id: 1
+  crn: 27424
+  enrolled: 0
+  full: nil
+  id: 1
+  notes: 
+  prerequisites: nil
+  restrictions: |
+    Must be enrolled in one of the following Levels:      
+    
+          Undergraduate
+    
+    May not be enrolled in one of the following Campuses:      
+    
+          University Alliance
+  section_number: 001
+  term_id: 6
+  title: Computing and the Web
 
-one:
-  course_id: 
-  term_id: 
+section2:
+  capacity: 0
+  comment: 
+  course_id: 2
+  crn: 27428
+  enrolled: 0
+  full: nil
+  id: 2
+  notes: 
+  prerequisites: nil
+  restrictions: |
+    Must be enrolled in one of the following Levels:      
+    
+          Undergraduate
+    
+    May not be enrolled in one of the following Campuses:      
+    
+          University Alliance
+  section_number: 001
+  term_id: 6
+  title: Algorithms & Data Struc I
 
-two:
-  course_id: 
-  term_id:
+section3:
+  capacity: 0
+  comment: 
+  course_id: 2
+  crn: 27429
+  enrolled: 0
+  full: nil
+  id: 3
+  notes: 
+  prerequisites: nil
+  restrictions: |
+    Must be enrolled in one of the following Levels:      
+    
+          Undergraduate
+    
+    May not be enrolled in one of the following Campuses:      
+    
+          University Alliance
+  section_number: 002
+  term_id: 6
+  title: Algorithms & Data Struc I
 
-# == Schema Info
-# Schema version: 20110414032850
-#
-# Table name: course_sections
-#
-#  id             :integer(4)      not null, primary key
-#  course_id      :integer(4)
-#  term_id        :integer(4)
-#  section_number :string(255)
-#  crn            :string(255)
-#  comment        :string(255)
-#  notes          :string(255)
-#  restrictions   :string(255)
-#  prerequisites  :string(255)
-#  full           :boolean(1)
-#  enrolled       :integer(4)      default(0)
-#  capacity       :integer(4)      default(0)
-#  title          :string(255)
+section4:
+  capacity: 0
+  comment: 
+  course_id: 2
+  crn: 27430
+  enrolled: 0
+  full: nil
+  id: 4
+  notes: 
+  prerequisites: nil
+  restrictions: |
+    Must be enrolled in one of the following Levels:      
+    
+          Undergraduate
+    
+    May not be enrolled in one of the following Campuses:      
+    
+          University Alliance
+  section_number: 100
+  term_id: 6
+  title: Algorithms & Data Struc I
+
+section5:
+  capacity: 0
+  comment: 
+  course_id: 3
+  crn: 26496
+  enrolled: 0
+  full: nil
+  id: 5
+  notes: 
+  prerequisites: nil
+  restrictions: |
+    Must be enrolled in one of the following Levels:      
+    
+          Undergraduate
+    
+    May not be enrolled in one of the following Campuses:      
+    
+          University Alliance
+  section_number: 001
+  term_id: 6
+  title: Surv of Communication Studies
+
+section6:
+  capacity: 0
+  comment: 
+  course_id: 4
+  crn: 26508
+  enrolled: 0
+  full: nil
+  id: 6
+  notes: 
+  prerequisites: nil
+  restrictions: |
+    Must be enrolled in one of the following Levels:      
+    
+          Undergraduate
+    
+    May not be enrolled in one of the following Majors:      
+    
+          Communication
+    
+    May not be enrolled in one of the following Campuses:      
+    
+          University Alliance
+  section_number: 001
+  term_id: 6
+  title: Business & Prof Communication
+
