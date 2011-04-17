@@ -159,6 +159,7 @@
       },
       
       onMouseEnter: function(element) {
+        $('.keyboardRow').removeClass('keyboardRow');
         this.lastEnter = element;
         if(this.enterTimeout) clearTimeout(this.enterTimeout);
         this.enterTimeout = setTimeout(this.processMouseEnter.wrap(this, element), 250);
@@ -253,7 +254,6 @@
         var parent = row.closest('.drillDownPanelContainer');
         var height = parent.height();
         var scrollTop = parent.scrollTop();
-        var scrollBottom = scrollTop + height;
         var offset = row.offset().top - parent.offset().top;
         
         if(offset < 1) {
