@@ -3,7 +3,7 @@ class MainController < ApplicationController
   
   before_filter :check_guest, :except => [:index, :useie, :bugReport, :ie, :jserror]
   before_filter :check_ie, :except => [:useie, :ie, :jserror]
-  before_filter :check_login, :except => [:useie, :ie, :jserror]
+  before_filter :check_login, :except => [:useie, :ie, :jserror, :bugReport, :featureRequest, :save_search]
 
   def index
     @nav = true

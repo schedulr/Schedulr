@@ -1,8 +1,8 @@
 %h1 Javascript Errors
-%p User: #{@user}
+- if @user
+  %p User: #{@user}
 
 - @errors.each do |key, error|
-  - Rails.logger.debug error.inspect
   %br
   %h2 Error:
   %dl
