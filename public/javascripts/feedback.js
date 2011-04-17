@@ -34,8 +34,8 @@ var Feedback = (function($) {
       var form = this.container.find('form')[0];
       var data = {
         rating: $("input[name=rating]", form).val(),
-        use_register: $("input[name=use_register]", form).val(),
-        register_feedback: $("textarea[name=register_feedback]", form).val(),
+        //use_register: $("input[name=use_register]", form).val(),
+        //register_feedback: $("textarea[name=register_feedback]", form).val(),
         share_friend: $("input[name=share_friend]", form).val(),
         share_advisor: $("input[name=share_advisor]", form).val(),
         share_feedback: $("textarea[name=share_feedback]", form).val(),
@@ -45,7 +45,7 @@ var Feedback = (function($) {
         feedback: $("textarea[name=feedback]", form).val()
       };
       
-      var checkboxes = $w("rating use_register share_friend share_advisor recommend prefer_schedulr");
+      var checkboxes = $w("rating share_friend share_advisor recommend prefer_schedulr");
       for(var c = 0; c < checkboxes.length; c++) {
         var value = data[checkboxes[c]];
         var checkbox = $("input[name="+checkboxes[c]+"]", form).filter(":checked");

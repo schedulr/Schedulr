@@ -2,16 +2,6 @@
   %label.feedbackDescription How would you rate Schedulr? (1 = Epic suckage, 5 = So awesome I wish I knew about this earlier)
   = radios.render({name: 'rating', values: [1, 2, 3, 4, 5]})
   
-  %label.feedbackDescription{:for => 'use_register'} Did you use the Register Courses feature?
-  = radios.render({name: 'use_register', values: $w('Yes No')})
-  
-  %label.feedbackDescription{:for => 'register_feedback'}
-    If so, did it work for you? (If not, can you explain briefly)?
-    %br
-    Do you have any feedback on that feature?
-  .textAreaWrapper
-    %textarea{:name => 'register_feedback', :rows => 3, :cols => 50}
-  
   %label.feedbackDescription{:for => 'share_friend'} Did you share a schedule with a friend?
   = radios.render({name: 'share_friend', values: $w('Yes No')})
   

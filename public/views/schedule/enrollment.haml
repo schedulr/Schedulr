@@ -9,4 +9,4 @@
         - var changeValue = changed[course.id] ? 'yes' : 'nope';
         %dd{:class => (data[1] - data[0] < $.config.enrollment.low ? 'conflict' : ''), 'data-changed' => changeValue} #{data[0]} of #{data[1]} students
       
-  %em Only enrollment data was last updated at: #{$.enrollmentTime}
+  %em Only enrollment data<br />was last updated<br />at: #{$.enrollmentTime}

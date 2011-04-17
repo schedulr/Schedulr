@@ -10,8 +10,10 @@ end %>
 
 state.schedules = [<%= raw schedules.join(',') %>];
 state.courses = [<%= raw(@schedules.map{|schedule| schedule.course_sections}.flatten.uniq.map{|course| "d.sections[#{course.id}]"}.join(',')) %>];
-state.viewed_message = <%= @person.viewed_message %>;
+state.viewed_message = <%= @person.viewed_message || "false" %>;
 state.version = <%= @person.version %>;
 state.state = <%= raw (@person.state || "{}") %>;
-state.feedback = <%= Feedback.where({:person_id => @person.id}).count > 0 %>;
-state.firstVisit = <%= Person.last.id - @person.id < 5 %>;
+<% if @person.id %>
+  state.feedback = <%= Feedback.where({:person_id => @person.id}).count > 0 %>;
+  state.firstVisit = <%= Person.last.id - @person.id < 5 %>;
+<% end %>
