@@ -57,15 +57,14 @@ class ApplicationController < ActionController::Base
   
   #returns the user model of the current user
   def logged_in_user
-    unless @logged_in_user
-      if session[:user]
-        if session[:user].to_i > 0
-          @logged_in_user = Person.find session[:user].to_i
-        else
-          @logged_in_user = Person.new
-        end
+    if session[:user]
+      if session[:user].to_i < 1
+        @logged_in_user = Person.new
+      elsif !@logged_in_user || @logged_in_user.id != session[:user].to_i
+        @logged_in_user = Person.find session[:user].to_i
       end
     end
+    
     @logged_in_user
   end
 end

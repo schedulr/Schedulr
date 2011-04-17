@@ -52,7 +52,7 @@ class MainControllerTest < ActionController::TestCase
     get_success :set_version, {:version => 1}, {:user => person1}
     get_success :set_version, {:version => '2'}, {:user => person2}
     
-    #assert(Person.find(person1).version == 1)
-    #assert(Person.find(person2).version == 2)
+    assert(Person.find(person1).version == 1)
+    assert(Person.find(person2).version == 2)
   end
 end
