@@ -349,6 +349,7 @@
             if(!('filters' in newPanel)) delete originalPanel.filters;
             if(!('classCallback' in newPanel)) delete originalPanel.classCallback;
             if(!('filteredItems' in newPanel)) delete originalPanel.filteredItems;
+            if(!('items' in newPanel)) delete originalPanel.filteredItems;
               
             this.updateExistingPanel(data.panelIndex+1);
             this.hideOpenPanels(data.panelIndex+1);
