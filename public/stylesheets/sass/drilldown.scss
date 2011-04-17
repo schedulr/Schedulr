@@ -150,6 +150,10 @@
   
   .keyboardRow {
     background-position: right -100px-$offset !important;
+    
+    a {
+      color: #FFFFFF !important;
+    }
   }
   .drillDownArrowRow.keyboardRow {
     background-position: right -300px-$offset !important;

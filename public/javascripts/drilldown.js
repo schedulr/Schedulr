@@ -237,8 +237,7 @@
         if(row === undefined || row.length === 0) {
           if(this.panels[index].details) {
             row = $('#ddrDetailsLink-'+index+'-0').closest('li');
-          }
-          if(this.panels[index].items === undefined || this.panels[index].items.length === 0) {
+          } else if(this.panels[index].items === undefined || this.panels[index].items.length === 0) {
             row = $('#ddrf-'+index+'-0').closest('li');
           } else {
             row = $('#ddr-'+index+'-0').closest('li');
@@ -250,7 +249,18 @@
         }
         
         row.addClass('keyboardRow');
-        row.closest('drillDownPanelContainer').scrollTop(row.offset().top);
+        
+        var parent = row.closest('.drillDownPanelContainer');
+        var height = parent.height();
+        var scrollTop = parent.scrollTop();
+        var scrollBottom = scrollTop + height;
+        var offset = row.offset().top - parent.offset().top;
+        
+        if(offset < 1) {
+          parent.scrollTop(scrollTop + offset - 1);
+        } else if(offset > height) {
+          parent.scrollTop(offset - height + row.height() + scrollTop);
+        }
         
         var data = this.retrievePanel(row);
         this.openRow(data.panelIndex, data.itemIndex, data.filtered);
@@ -274,27 +284,37 @@
         var panel = data.panel;
         if(panel === undefined) return;
         
-        if(index < 0) {
-          if(data.filtered && panel.items !== undefined && panel.items.length > 0) {
-            index = panel.items.length-1;
+        var row;
+        if(panel.details) {
+          if(panel.links) {
+            if(index < 0) index = panel.links.length - 1;
+            else if(index > panel.links.length) index = 0;
+            row = $('#ddrDetailsLink-'+index+'-0').closest('li');
+          }
+        } else {
+          if(index < 0) {
+            if(data.filtered && panel.items !== undefined && panel.items.length > 0) {
+              index = panel.items.length-1;
+              data.filtered = false;
+            } else if(!data.filtered && panel.filteredItems !== undefined && panel.filteredItems.length > 0) {
+              index = panel.filteredItems.length-1;
+              data.filtered = true;
+            } else {
+              index = 0;
+            }
+          }
+          
+          if(data.filtered && index >= panel.filteredItems.length && panel.items !== undefined) {
             data.filtered = false;
-          } else if(!data.filtered && panel.filteredItems !== undefined && panel.filteredItems.length > 0) {
-            index = panel.filteredItems.length-1;
+            index = 0;
+          } else if(!data.filtered && index >= panel.items.length && panel.filteredItems !== undefined) {
             data.filtered = true;
-          } else {
             index = 0;
           }
+          
+          row = $('#ddr'+(data.filtered ? 'f' : '')+'-'+data.panelIndex+'-'+index).closest('li');
         }
         
-        if(data.filtered && index >= panel.filteredItems.length && panel.items !== undefined) {
-          data.filtered = false;
-          index = 0;
-        } else if(!data.filtered && index >= panel.items.length && panel.filteredItems !== undefined) {
-          data.filtered = true;
-          index = 0;
-        }
-        
-        var row = $('#ddr'+(data.filtered ? 'f' : '')+'-'+data.panelIndex+'-'+index).closest('li');
         data.liTag.removeClass('keyboardRow');
         this.addKeyboardClass(data.panelIndex, row);
       },
