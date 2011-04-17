@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class MainControllerTest < ActionController::TestCase
-  # Replace this with your real tests.
+  
   test "un-logged in users" do
     check_login :index
     check_login :set_version

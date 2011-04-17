@@ -21,8 +21,14 @@ class ApplicationController < ActionController::Base
   end
   
   def validate
-    schedule = Schedule.find params[:id]
+    schedule = Schedule.find_by_id params[:id]
+    unless schedule
+      render :text => 'Schedule not found.'
+      return false
+    end
+    
     return true if schedule && schedule.person_id == session[:user].to_i
+    
     render :text => 'Not Authorized'
     return false
   end
