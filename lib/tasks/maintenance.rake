@@ -1,13 +1,11 @@
 namespace :log do
   desc "Rotates the log files"
   task :rotate => :environment do
-  	log_directory = File.join(Rails.root, 'log')
-  	backup_directory = File.join(log_directory, "backups/#{Time.now.to_i}")
-  	
-  	FileUtils.mkdir_p backup_directory
-  	cmd = "cp #{log_directory}/*.log #{backup_directory}"
-  	#puts cmd
-  	`#{cmd}`
+    log_directory = File.join(Rails.root, 'log')
+    backup_directory = File.join(log_directory, "backups/#{Time.now.to_i}")
+    
+    FileUtils.mkdir_p backup_directory
+    `cp #{log_directory}/*.log #{backup_directory}`
     Rails.logger.flush
   end
 end  
@@ -32,8 +30,7 @@ namespace :db do
   desc 'Backup the Database'
   task :backup => :environment do
     dir = File.join Rails.root, 'db/backup'
-    file = Time.now.to_i.to_s+'.sql.gz'
-    file = File.join dir, file
+    file = File.join dir, "#{Time.now.to_i}.sql.gz"
     
     FileUtils.mkdir_p dir
     config = YAML::load(open(File.join(Rails.root, 'config/database.yml')))[Rails.env]
