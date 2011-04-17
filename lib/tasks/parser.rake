@@ -47,7 +47,7 @@ task :create_jsfile => :environment do
   include Schedulr
   Rails.logger.auto_flushing = true
   handleErrors do
-    createJsfile
+    JsObject.create
   end
   Rails.logger.flush
 end
