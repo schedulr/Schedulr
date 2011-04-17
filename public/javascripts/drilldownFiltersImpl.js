@@ -95,30 +95,166 @@ function createDrilldownFilters($) {
   }
   
   var drillDownCallbacks = {
-    sectionFilters: [drillDownFilters.times, drillDownFilters.full],
-    timeSectionFilters: [drillDownFilters.times, drillDownFilters.full, drillDownFilters.courseSectionDepartment, drillDownFilters.courseSectionGrad, drillDownFilters.courseSectionUndergrad],
-    departmentFilters: [drillDownFilters.department, drillDownFilters.departmentEmpty],
-    courseFilters: [drillDownFilters.department, drillDownFilters.courseSectionsFull, drillDownFilters.grad, drillDownFilters.undergrad, drillDownFilters.offerredThisSemester],
-    requirementCourseFilters: [drillDownFilters.courseSectionsFull, drillDownFilters.grad, drillDownFilters.undergrad, drillDownFilters.offerredThisSemester],
-    timeFilters: [drillDownFilters.timesFilter, drillDownFilters.sectionDepartment, drillDownFilters.full, drillDownFilters.sectionGrad, drillDownFilters.sectionUndergrad],
-    instructorFilters: [drillDownFilters.sectionDepartment, drillDownFilters.full, drillDownFilters.sectionGrad, drillDownFilters.sectionUndergrad],
-    departments: function(node) { return {items: d.departments.list, textKey: 'name', callback: drillDownCallbacks.courses, filters: drillDownCallbacks.departmentFilters}; },
-    requirements: function(node) { return {items: d.requirements.list, textKey: 'name', callback: drillDownCallbacks.requirementCourses}; },
-    requirementCourses: function(obj) { return {items: obj.courses, textKey: 'title', callback: drillDownCallbacks.sections, filters: drillDownCallbacks.requirementCourseFilters}; },
-    instructors: function(node) { return {items: d.instructors.grouped, textKey: 'letter', callback: drillDownCallbacks.instructorGroup, filters: []}; },
-    instructorGroup: function(node) { return {items: node.instructors, textKey: 'ddt', callback: drillDownCallbacks.instructorSections, filters: drillDownCallbacks.instructorFilters}; },
-    instructorSections: function(obj) { return {items: obj.sections, textKey: 'title', fin: true, classCallback: drillDownFilters.conflict, callback: drillDownCallbacks.sectionDetails, filters: drillDownCallbacks.sectionFilters}; },
-    times: function(node) { return {items: d.times, textKey: 'hour', callback: drillDownCallbacks.hours, filters: []}; },
-    hours: function(node) { return {items: node.times, textKey: 'time', classCallback: drillDownFilters.conflict, callback: drillDownCallbacks.timeSections, filters: drillDownCallbacks.timeFilters}; },
-    days: function(node) { return {items: d.days, textKey: 'days', callback: drillDownCallbacks.dayTimes}; },
-    dayTimes: function(obj) { return {items: obj.times, textKey: 'time', classCallback: drillDownFilters.conflict, callback: drillDownCallbacks.timeSections, filters: drillDownCallbacks.timeFilters}; },
-    timeSections: function(obj) { return {items: obj.sections, textKey: 'title', fin: true, classCallback: drillDownFilters.conflict, callback: drillDownCallbacks.sectionDetails, filters: drillDownCallbacks.timeSectionFilters}; },
-    courses: function(obj) { return {items: obj.courses, textKey: 'title', callback: drillDownCallbacks.sections, filters: drillDownCallbacks.courseFilters}; },
-    sections: function(obj) { return {items: obj.sections, textKey: 'ddt', fin: true, classCallback: drillDownFilters.conflict, callback: drillDownCallbacks.sectionDetails, filters: drillDownCallbacks.sectionFilters}; },
+    sectionFilters: [
+      drillDownFilters.times,
+      drillDownFilters.full
+    ],
+    timeSectionFilters: [
+      drillDownFilters.times,
+      drillDownFilters.full,
+      drillDownFilters.courseSectionDepartment,
+      drillDownFilters.courseSectionGrad,
+      drillDownFilters.courseSectionUndergrad
+    ],
+    departmentFilters: [
+      drillDownFilters.department,
+      drillDownFilters.departmentEmpty
+    ],
+    courseFilters: [
+      drillDownFilters.department,
+      drillDownFilters.courseSectionsFull,
+      drillDownFilters.grad,
+      drillDownFilters.undergrad,
+      drillDownFilters.offerredThisSemester
+    ],
+    requirementCourseFilters: [
+      drillDownFilters.courseSectionsFull,
+      drillDownFilters.grad,
+      drillDownFilters.undergrad,
+      drillDownFilters.offerredThisSemester
+    ],
+    timeFilters: [
+      drillDownFilters.timesFilter,
+      drillDownFilters.sectionDepartment,
+      drillDownFilters.full,
+      drillDownFilters.sectionGrad,
+      drillDownFilters.sectionUndergrad
+    ],
+    instructorFilters: [
+      drillDownFilters.sectionDepartment,
+      drillDownFilters.full,
+      drillDownFilters.sectionGrad,
+      drillDownFilters.sectionUndergrad
+    ],
+    
+    departments: function(node) {
+      return {
+        items: d.departments.list,
+        textKey: 'name',
+        callback: drillDownCallbacks.courses,
+        filters: drillDownCallbacks.departmentFilters
+      };
+    },
+    requirements: function(node) {
+      return {
+        items: d.requirements.list,
+        textKey: 'name',
+        callback: drillDownCallbacks.requirementCourses
+      };
+    },
+    requirementCourses: function(obj) {
+      return {
+        items: obj.courses,
+        textKey: 'title',
+        callback: drillDownCallbacks.sections,
+        filters: drillDownCallbacks.requirementCourseFilters
+      };
+    },
+    instructors: function(node) {
+      return {
+        items: d.instructors.grouped,
+        textKey: 'letter',
+        callback: drillDownCallbacks.instructorGroup,
+        filters: []
+      };
+    },
+    instructorGroup: function(node) {
+      return {
+        items: node.instructors,
+        textKey: 'ddt',
+        callback: drillDownCallbacks.instructorSections,
+        filters: drillDownCallbacks.instructorFilters
+      };
+    },
+    instructorSections: function(obj) {
+      return {
+        items: obj.sections,
+        textKey: 'title',
+        classCallback: drillDownFilters.conflict,
+        callback: drillDownCallbacks.sectionDetails,
+        filters: drillDownCallbacks.sectionFilters
+      };
+    },
+    times: function(node) {
+      return {
+        items: d.times,
+        textKey: 'hour',
+        callback: drillDownCallbacks.hours,
+        filters: []
+      };
+    },
+    hours: function(node) {
+      return {
+        items: node.times,
+        textKey: 'time',
+        classCallback: drillDownFilters.conflict,
+        callback: drillDownCallbacks.timeSections,
+        filters: drillDownCallbacks.timeFilters
+      };
+    },
+    days: function(node) {
+      return {
+        items: d.days,
+        textKey: 'days',
+        callback: drillDownCallbacks.dayTimes
+      };
+    },
+    dayTimes: function(obj) {
+      return {
+        items: obj.times,
+        textKey: 'time',
+        classCallback: drillDownFilters.conflict,
+        callback: drillDownCallbacks.timeSections,
+        filters: drillDownCallbacks.timeFilters
+      };
+    },
+    timeSections: function(obj) {
+      return {
+        items: obj.sections,
+        textKey: 'title',
+        classCallback: drillDownFilters.conflict,
+        callback: drillDownCallbacks.sectionDetails,
+        filters: drillDownCallbacks.timeSectionFilters
+      };
+    },
+    courses: function(obj) {
+      return {
+        items: obj.courses,
+        textKey: 'title',
+        callback: drillDownCallbacks.sections,
+        filters: drillDownCallbacks.courseFilters
+      };
+    },
+    sections: function(obj) {
+      return {
+        items: obj.sections,
+        textKey: 'ddt',
+        classCallback: drillDownFilters.conflict,
+        callback: drillDownCallbacks.sectionDetails,
+        filters: drillDownCallbacks.sectionFilters
+      };
+    },
     sectionDetails: function(obj) {
-      return {item: obj, details: true, links: [{text: 'Schedule Course', callback: function(obj) {
-        $.scheduleManager.currentSchedule().add(obj, true);
-      }}]};
+      return {
+        item: obj,
+        details: true,
+        links: [{
+          text: 'Schedule Course',
+          callback: function(obj) {
+            $.scheduleManager.currentSchedule().add(obj, true);
+          }
+        }]
+      };
     }
   };
   $.drillDownCallbacks = drillDownCallbacks;
