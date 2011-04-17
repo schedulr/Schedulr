@@ -97,6 +97,7 @@ class ScheduleControllerTest < ActionController::TestCase
     assert Mapping.count == 0
     assert Share.count == 3
     
+    # test that the secret links correctly shares the schedule and updates the correct share/mapping objects
     share = Share.first
     get_redirect :share_link, {:secret => share.secret}, {:user => people(:person2).id}
     
@@ -105,6 +106,7 @@ class ScheduleControllerTest < ActionController::TestCase
     assert schedule1.people.count == 1
     assert schedule2.people.count == 1
     
+    # prevent duplicate shares
     share = Share.first
     get_redirect :share_link, {:secret => share.secret}, {:user => people(:person2).id}
     
