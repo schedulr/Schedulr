@@ -45,10 +45,6 @@ end
 
 desc 'Reboot God'
 task :reboot_god => :environment do
-  require 'Deploy.rb'
-  require 'utils.rb'
   require 'god.rb'
-  include Schedulr
-  
-  puts God.reboot
+  puts Schedulr::God.reboot
 end

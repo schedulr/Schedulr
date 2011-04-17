@@ -1,6 +1,5 @@
 class AdminController < ApplicationController
   require 'net/ssh'
-  require 'Deploy.rb'
   require 'utils.rb'
   include Schedulr
   
