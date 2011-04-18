@@ -8,6 +8,7 @@ var TimeSelectManager = (function($) {
       this.visibleSelectionsMask = 0;
       this.selectionInProgress = false;
       this.source = undefined;
+      this.doubleClickTimeout = undefined;
     },
     
     selectionEvent: function(eventData) {
@@ -34,6 +35,23 @@ var TimeSelectManager = (function($) {
     },
     
     mousedown: function(eventData) {
+      if (!this.doubleClickTimeout) {
+        this.selectionInProgress = true;
+        
+        this.doubleClickTimeout = setTimeout((function () {
+          if (this.selectionInProgress) {
+            this.doubleClickTimeout = undefined;
+            this.mouseDownImpl(eventData);
+          }
+        }).wrap(this), 80);
+      } else {
+        clearTimeout(this.doubleClickTimeout);
+        this.doubleClickTimeout = undefined;
+        this.removeAllSelections();
+      }
+    },
+    
+    mouseDownImpl: function(eventData) {
       this.source = $(eventData.target);
       
       // We show the canvas on which we draw the selections.  This makes sure that the schedule boxes themselves
@@ -54,7 +72,6 @@ var TimeSelectManager = (function($) {
       var normalizedTop = this.roundToNearest(y, options.selection.timeInterval);
       
       this.addSelection(normalizedLeft, normalizedTop);
-      this.selectionInProgress = true;
     },
     
     mouseup: function(eventData) {
@@ -70,6 +87,12 @@ var TimeSelectManager = (function($) {
     
     mousemove: function(eventData) {
       if (this.selectionInProgress && eventData.which === options.mouseEvent.left) {
+        if (this.doubleClickTimeout !== undefined) {
+          clearTimeout(this.doubleClickTimeout);
+          this.doubleClickTimeout = undefined;
+          this.mouseDownImpl(eventData);
+        }
+      
         var selection = this.getCurrentSelection();
         if (!selection) {
           return true;
@@ -283,7 +306,6 @@ var TimeSelectManager = (function($) {
       for (var i = 0; i < this.selections.length; ++i) {
         this.removeSelection(i);
       }
-      this.showSelectionContainer(false);
     },
     
     getCurrentSelection: function() {
