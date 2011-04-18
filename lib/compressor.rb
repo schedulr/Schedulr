@@ -54,7 +54,7 @@ def compressSchedulr
   include Schedulr
   
   stylesheets = ['reset', 'aristo', 'main', 'dropShadow', 'drilldown', 'schedule', 'shadowbox', 'messages', 'messagesImpl']
-  javascripts = ['external/jquery', 'baseExtensions', 'external/base', 'external/string', 'jQueryExtensions', 'config', 'production', 'external/shadowbox', 'haml2', 'views', 'external/cookie', 'stacktrace', 'messages', 'dates', 'conflictDialog', 'schedule', 'sharedSchedule', 'scheduleManager', 'gcalManager', 'timeSelectManager',  'drilldownFilters', 'drilldown', 'help', 'search', 'enrollment', 'registerDialog', 'feedback', 'tooltips', 'drilldownFiltersImpl', 'application']
+  javascripts = ['external/jquery', 'baseExtensions', 'external/base', 'external/string', 'jQueryExtensions', 'config', 'production', 'external/shadowbox', 'haml2', 'views', 'external/cookie', 'stacktrace', 'ajax', 'messages', 'dates', 'conflictDialog', 'schedule', 'sharedSchedule', 'scheduleManager', 'gcalManager', 'timeSelectManager',  'drilldownFilters', 'drilldown', 'help', 'search', 'enrollment', 'registerDialog', 'feedback', 'tooltips', 'drilldownFiltersImpl', 'application']
 
   `sass --update public/stylesheets/sass:public/stylesheets`
   
