@@ -1,4 +1,4 @@
-- unless Rails.env == 'production'
+- unless Rails.env == 'production' || Rails.env == 'staging'
   = stylesheet_link_tag 'reset', 'aristo', 'main', 'dropShadow', 'drilldown', 'schedule', 'shadowbox', 'messages', 'messagesImpl'
 - else 
   = stylesheet_link_tag 'stylesheets'
