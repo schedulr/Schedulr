@@ -1,0 +1,17 @@
+%ajaxResponse
+  - if @guest
+    %loggedIn yes
+    %guest yes
+    %status success
+  - else
+    %loggedIn= @logged_in ? 'yes' : 'no'
+    %status= @data[:status]
+    
+    - if @data[:javascript]
+      %javascript= raw escape_xml(@data[:javascript])
+    - elsif @partialTemplate
+      %javascript
+        = raw escape_xml(render :partial => @partialTemplate)
+    
+    - if @data[:data]
+      %data= raw escape_xml(@data[:data])

@@ -21,7 +21,7 @@ var HelpSystem = (function($) {
     showHelp: function() {
       var title = state.version === 0 ? 'Welcome to a Better Course Schedulr!' : 'See What\'s New';
       new Dialog(this.helpTemplate.render.bind(this.helpTemplate), title, 'helpBox');
-      $.get(options.urls.version, {version: $.config.currentVersion});
+      Ajax.silent(options.urls.version, {data: {version: $.config.currentVersion}});
       state.version = $.config.currentVersion;
     }
   });

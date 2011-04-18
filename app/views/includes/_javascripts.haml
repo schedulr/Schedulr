@@ -1,6 +1,6 @@
 - unless Rails.env == 'production'
   = javascript_include_tag 'external/jquery', 'baseExtensions', 'external/base', 'external/string', 'jQueryExtensions'
-  = javascript_include_tag 'config', 'haml2', 'views', 'external/cookie', 'stacktrace'
+  = javascript_include_tag 'config', 'haml2', 'views', 'external/cookie', 'stacktrace', 'ajax'
   = javascript_include_tag 'messages', 'external/shadowbox'
   = javascript_include_tag 'dates', 'conflictDialog', 'schedule', 'sharedSchedule', 'scheduleManager', 'gcalManager', 'drilldownFilters', 'drilldown', 'help', 'search', 'enrollment', 'registerDialog', 'feedback', 'tooltips', 'drilldownFiltersImpl', 'application', 'test'
   %script{ :src => "http://www.google-analytics.com/urchin.js", :type => "text/javascript" }

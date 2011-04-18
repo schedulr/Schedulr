@@ -12,9 +12,18 @@ class ApplicationController < ActionController::Base
   #protect_from_forgery # See ActionController::RequestForgeryProtection for details
   
   protected
+  def ajax_response(data, partialTemplate=nil)
+    @data = data
+    @logged_in = logged_in
+    @partialTemplate = partialTemplate
+    @guest = session[:user] == -1
+    
+    render :template => '/main/ajax', :layout => false, :content_type => 'text/xml'
+  end
+  
   def check_guest
     if session[:user] && session[:user].to_i < 1
-      render :text => ''
+      ajax_response :status => 'success'
       return false
     end
     return true
@@ -23,13 +32,13 @@ class ApplicationController < ActionController::Base
   def validate
     schedule = Schedule.find_by_id params[:id]
     unless schedule
-      render :text => 'Schedule not found.'
+      ajax_response :status => 'Schedule was not found on the server.'
       return false
     end
     
     return true if schedule && schedule.person_id == session[:user].to_i
     
-    render :text => 'Not Authorized'
+    ajax_response :status => 'Not Authorized'
     return false
   end
   
@@ -38,7 +47,7 @@ class ApplicationController < ActionController::Base
     session[:user] = -1 if params[:guest]
     if !logged_in
       if request.xhr?
-        render :text => 'window.loggedOut && window.loggedOut();'
+        ajax_response :status => 'loggedOut'
       else
         redirect_to '/login'
       end

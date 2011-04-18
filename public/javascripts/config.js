@@ -8,6 +8,16 @@ jQuery.config = {
   imageVersion: 1302145525,
   handleErrors: false,
   
+  ajax: {
+    templates: {
+      errorTemplate: 'error',
+      notSuccessTemplate: 'notSuccess',
+      scheduleSuccessTemplate: 'scheduleSuccess',
+      loggedOutTemplate: 'loggedOut',
+      root: 'ajax/'
+    }
+  },
+  
   search: {
     url: '/main/save_search'
   },
@@ -99,8 +109,8 @@ jQuery.config = {
     urls: {
       idPrefixUrl: "https://www.google.com/calendar/feeds/",
       idSuffixUrl: "/private/full",
-      addId: "/main/add_gcal_id",
-      getId: "/main/get_gcal_id"
+      addId: "/schedule/add_gcal_id",
+      getId: "/schedule/get_gcal_id"
     },
     service: undefined,
     scope: "https://www.google.com/calendar/feeds/",

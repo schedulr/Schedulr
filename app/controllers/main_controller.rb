@@ -1,6 +1,4 @@
 class MainController < ApplicationController
-  require 'net/http'
-  
   before_filter :check_guest, :except => [:index, :useie, :bugReport, :ie, :jserror]
   before_filter :check_ie, :except => [:useie, :ie, :jserror]
   before_filter :check_login, :except => [:useie, :ie, :jserror, :bugReport, :featureRequest, :save_search]
@@ -18,19 +16,19 @@ class MainController < ApplicationController
   
   def jserror
     Notifications.deliver_jserror(params[:errors], session[:user])
-    render :text => 'success'
+    ajax_response :status => 'success'
   end
   
   def save_search
     Search.new({:search => params[:searches].join("\n")}).save
-    render :text => 'success'
+    ajax_response :status => 'success'
   end
   
   def set_version
     user = logged_in_user
     user.version = params[:version].to_i
     user.save
-    render :text => 'success'
+    ajax_response :status => 'success'
   end
   
   def bugReport
@@ -63,7 +61,7 @@ class MainController < ApplicationController
     @feedback.prefer_schedulr = params[:prefer_schedulr] == 'Yes'
     @feedback.feedback = params[:feedback]
     @feedback.save
-    render :text => 'success'
+    ajax_response :status => 'success'
   end
   
   def su

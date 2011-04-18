@@ -504,7 +504,7 @@ var GcalManager = (function($) {
       
       this.manager.currentSchedule().doSave((function() {
         // Let's check to see if they already have a calendar...
-        $.get(options.urls.getId, 
+        Ajax.silent(options.urls.getId, 
           { id: schedule.id },
           (function(gcalId) {
             if (gcalId.length > 1) {
@@ -581,7 +581,7 @@ var GcalManager = (function($) {
           this.gcalId = this.parseScheduleId(result.entry.id.$t);
           
           this.manager.currentSchedule().doSave((function() {
-            $.get(options.urls.addId, {
+            Ajax.silent(options.urls.addId, {
                 id: schedule.id,
                 gcal_id: this.gcalId
               },
