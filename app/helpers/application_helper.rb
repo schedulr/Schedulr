@@ -8,4 +8,9 @@ module ApplicationHelper
   def partial(template, locals={})
     render :partial => template, :locals => locals
   end
+  
+  def escape_xml(str)
+    m = {'>' => '&gt;', '<' => '&lt;', "'" => '&apos;', '"' => '&quot;', '&' => '&amp;'}
+    (str || '').to_s.gsub(/[&<>\'\"]/) {|match| m[match]}
+  end
 end

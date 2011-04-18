@@ -59,12 +59,7 @@ var Feedback = (function($) {
       }
       
       this.allowSubmit = true;
-      $.ajax({
-        url: options.url,
-        data: data,
-        success: this.onSuccess.wrap(this),
-        error: this.onSuccess.wrap(this)
-      });
+      Ajax.request(options.url, data, this.onSuccess.wrap(this));
       $.tooltips.remove('Feedback Appreciated');
     },
     

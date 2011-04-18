@@ -8,7 +8,7 @@ class ScheduleController < ApplicationController
     @schedule = Schedule.new
     @schedule.person = logged_in_user
     @schedule.save
-    render :text => @schedule.id
+    ajax_response :status => 'success', :data => @schedule.id
   end
   
   def update
@@ -31,7 +31,7 @@ class ScheduleController < ApplicationController
     end
     
     @schedule.save
-    render :text => 'success'
+    ajax_response :status => 'success'
   end
   
   def destroy
@@ -40,31 +40,31 @@ class ScheduleController < ApplicationController
     ActiveRecord::Base.connection.execute "DELETE FROM people_schedules WHERE schedule_id = #{@schedule.id}"
     ActiveRecord::Base.connection.execute "DELETE FROM course_sections_schedules WHERE schedule_id = #{@schedule.id}"
     ActiveRecord::Base.connection.execute "DELETE FROM shares WHERE schedule_id = #{@schedule.id}"
-    render :text => 'success'
+    ajax_response :status => 'success'
   end
   
   def set_state
     user = logged_in_user
     user.state = params[:state]
     user.save
-    render :text => 'success'
+    ajax_response :status => 'success'
   end
   
   def share
     @schedule = Schedule.find params[:id]
     @schedule.share params[:email]
-    render :text => 'success'
+    ajax_response :status => 'success'
   end
   
   def unshare
     @schedule = Schedule.find params[:id]
     @schedule.unshare params[:email]
-    render :text => 'success'
+    ajax_response :status => 'success'
   end
   
   def unshareWithMe
     ActiveRecord::Base.connection.execute "DELETE FROM people_schedules WHERE schedule_id = #{params[:id]} AND person_id = #{logged_in_user.id}"
-    render :text => 'success'
+    ajax_response :status => 'success'
   end
   
   def share_link
@@ -82,18 +82,18 @@ class ScheduleController < ApplicationController
     if @sharedWithMe.length > 0
       @sharedWithMe = Schedule.all(:conditions => ["id IN (#{@sharedWithMe.map{|schedule| schedule.id}.join(',')})"], :include => [:person, :course_sections])
     end
-    render :layout => false
+    ajax_response({:status => 'success'}, 'share_data')
   end
   
   def add_gcal_id
     @schedule = Schedule.find params[:id]
     @schedule.gcal_id = params[:gcal_id]
     @schedule.save
-    render :text => 'success'
+    ajax_response :status => 'success'
   end
   
   def get_gcal_id
     @schedule = Schedule.find params[:id]
-    render :text => @schedule.gcal_id
+    ajax_response :status => 'success', :data => @schedule.gcal_id
   end
 end

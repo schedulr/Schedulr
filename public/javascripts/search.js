@@ -130,7 +130,7 @@ var SearchEngine = (function($) {
     
     sendSearch: function() {
       this.searchTimeout = undefined;
-      $.get(options.url, {searches: this.searches});
+      Ajax.silent(options.url, {data: {searches: this.searches}});
       this.searches = [];
     },
     

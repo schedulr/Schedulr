@@ -54,10 +54,6 @@ var ScheduleManager = (function($) {
       setInterval(this.downloadData.wrap(this, undefined), options.interval);
     }),
     
-    scheduleSaved: function() {
-      $.tooltips.showAlert("Your schedule has been saved successfully.");
-    },
-    
     /**
      * Creates a new schedule, renders it, and switches to it
      */
@@ -389,10 +385,7 @@ var ScheduleManager = (function($) {
      * in order to be much more defensive.
      */
     downloadData: function(callback) {
-      $.get(options.urls.data, {}, (function(data) {
-        // Needed for IE :(
-        eval(data);
-        
+      Ajax.silent(options.urls.data, (function(data) {
         /**
          * Replace the list of email addresses that a schedule is shared with, with the updated list just downloaded.
          */

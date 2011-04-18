@@ -171,6 +171,7 @@
     timeout = undefined;
     $.ajax({
       cache: false,
+      type: "xml",
       url: "/main/jserror",
       data: {errors: errors}
     });

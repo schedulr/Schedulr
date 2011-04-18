@@ -316,7 +316,7 @@ var Schedule = (function($) {
     
     doSave: function(callback) {
       if(this.id === undefined) {
-        $.get(options.urls.create, {}, (function(data) {
+        Ajax.request(options.urls.create, (function(data) {
           this.id = data;
           callback();
         }).bind(this));
@@ -333,24 +333,24 @@ var Schedule = (function($) {
         return slot.courses.pluck('id').join(',');
       }).join(',');
       
-      $.ajax({url: options.urls.update, data: {courses: slotString, name: this.name, id: this.id}, success: this.manager.scheduleSaved.wrap(this.manager), error: this.ajaxCallback(this.save.wrap(this))});
+      Ajax.schedule(options.urls.update, {data: {courses: slotString, name: this.name, id: this.id}});
     },
     
     share: function(email) {
       this.doSave((function() {
-        $.ajax({url: options.urls.share, data: {id: this.id, email: email}, success: this.manager.scheduleSaved.wrap(this.manager), error: this.ajaxCallback(this.share.wrap(this, email))});
+        Ajax.schedule(options.urls.share, {data: {id: this.id, email: email}});
       }).bind(this));
     },
     
     unshare: function(email) {
       this.doSave((function() {
-        $.ajax({url: options.urls.unshare, data: {id: this.id, email: email}, success: this.manager.scheduleSaved.wrap(this.manager), error: this.ajaxCallback(this.unshare.wrap(this, email))});
+        Ajax.schedule(options.urls.unshare, {data: {id: this.id, email: email}});
       }).bind(this));
     },
     
     unshareWithMe: function() {
       this.doSave((function() {
-        $.ajax({url: options.urls.unshareWithMe, data: {id: this.id}, success: this.manager.scheduleSaved.wrap(this.manager), error: this.ajaxCallback(this.unshareWithMe.wrap(this))});
+        Ajax.schedule(options.urls.unshareWithMe, {data: {id: this.id}});
       }).bind(this));
     },
 
@@ -359,14 +359,8 @@ var Schedule = (function($) {
      */
     destroy: function() {
       if(this.id !== undefined) {
-        $.ajax({url: options.urls.destroy, data: {id: this.id}, success: this.manager.scheduleSaved.wrap(this.manager), error: this.ajaxCallback(this.destroy.wrap(this))});
+        Ajax.schedule(options.url.destroy, {data: {id: this.id}});
       }
-    },
-    
-    ajaxCallback: function(callback) {
-      return function(data) {
-        $.error("The most recent thing you did was not saved correctly.  This means if you come back tommorrow, whatever you just did might not show up :(.<br /><br />If you see this message more than once, refresh the page and try your thing again.<br /><br />If it still happens, shoot me an email and I'll do what I can to fix it.");
-      };
     }
   });
 })(jQuery);

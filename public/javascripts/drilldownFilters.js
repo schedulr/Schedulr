@@ -235,7 +235,7 @@
       doWrite: function() {
         this.timeout = undefined;
         var str = Object.toJSON($.drillDownState);
-        $.get(options.urls.state, {state: Object.toJSON($.drillDownState)});
+        Ajax.request(options.urls.state, {data: {state: Object.toJSON($.drillDownState)}});
       }
     });
     return new DrillDownFilters($(this));
