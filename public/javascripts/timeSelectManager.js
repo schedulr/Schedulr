@@ -26,8 +26,8 @@ var TimeSelectManager = (function($) {
       
       // Make sure our mouse event is actually registering on something we want it to.
       if (options.eventTargets[eventData.target.className]) {
-        // If that class has registered for this event...
-        if (options.eventTargets[eventData.target.className][eventData.type]) {
+        // If that class has not defined an explicit action for the event...
+        if (options.eventTargets[eventData.target.className][eventData.type] !== false) {
           this[eventData.type](eventData);
         }
       }
@@ -71,8 +71,9 @@ var TimeSelectManager = (function($) {
       if (!eventData.ctrlKey && (this.selectionStarted || this.multiSelect)) {
         this.selectionStarted = this.multiSelect = false;
         for (var i = 0; i < this.selections.length; ++i) {
-          this.removeSelection(i);
-        }        
+          //this.removeSelection(i);
+        }
+        $.drillDown.openRow(0, 0);
       } else if (eventData.ctrlKey) {
         var selection = this.getCurrentSelection();
         if (selection && (selection.box.height() < options.selection.minHeight)) {
@@ -82,7 +83,7 @@ var TimeSelectManager = (function($) {
         
         this.multiSelect = true;
         this.selectionStarted = false;
-      }
+      }      
     },
     
     mousemove: function(eventData) {
@@ -163,10 +164,15 @@ var TimeSelectManager = (function($) {
       var startTime = this.getTimeForHeight(topOfSelection);
       var endTime = this.getTimeForHeight(bottomOfSelection);
       
-      var startLabel = selection.startTimeLabel;
-      var endLabel = selection.endTimeLabel;
+      var startLabel = selection.startTime.label;
+      var endLabel = selection.endTime.label;
       startLabel.html(startTime.string);
       endLabel.html(endTime.string);
+      
+      selection.startTime.hours = startTime.hours;
+      selection.startTime.minutes = startTime.minutes;
+      selection.endTime.hours = endTime.hours;
+      selection.endTime.minutes = endTime.minutes;
       
       startLabel.css({
         'top': topOfSelection - options.selection.timeLabelHeight + 1,
@@ -214,16 +220,25 @@ var TimeSelectManager = (function($) {
       this.source.append(box);
       
       var selection = {
-        startTimeLabel: $('<div class="startTimeLabel"></div>'),
-        endTimeLabel: $('<div class="endTimeLabel"></div>'),
+        startTime: {
+          hours: 0,
+          minutes: 0,
+          label: $('<div class="startTimeLabel"></div>')
+        },
+        endTime: {
+          hours: 0,
+          minutes: 0,
+          label: $('<div class="endTimeLabel"></div>')
+        },
+        day: (left / options.selection.dayColumnWidth),
         id: this.selections.length,
         left: left,
         top: top,
         box: box
       };
       
-      this.source.append(selection.startTimeLabel);
-      this.source.append(selection.endTimeLabel);
+      this.source.append(selection.startTime.label);
+      this.source.append(selection.endTime.label);
       
       // Add a handler to delete a selection when a user ctrl-clicks it in multi-select
       // mode.
@@ -270,8 +285,8 @@ var TimeSelectManager = (function($) {
           }
         };
         selection.box.fadeOut("fast", removeCallback.bind(this, selection.box));
-        selection.startTimeLabel.fadeOut("fast", removeCallback.bind(this, selection.startTimeLabel));
-        selection.endTimeLabel.fadeOut("fast", removeCallback.bind(this, selection.endTimeLabel));
+        selection.startTime.label.fadeOut("fast", removeCallback.bind(this, selection.startTime.label));
+        selection.endTime.label.fadeOut("fast", removeCallback.bind(this, selection.endTime.label));
         
         this.visibleSelectionsMask &= ~(1 << selection.id);
       }
@@ -285,8 +300,8 @@ var TimeSelectManager = (function($) {
       var selection = this.getCurrentSelection();
       if (selection) {
         selection.box[show ? 'fadeIn' : 'fadeOut']("fast");
-        selection.startTimeLabel[show ? 'fadeIn' : 'fadeOut']("fast");
-        selection.endTimeLabel[show ? 'fadeIn' : 'fadeOut']("fast");
+        selection.startTime.label[show ? 'fadeIn' : 'fadeOut']("fast");
+        selection.endTime.label[show ? 'fadeIn' : 'fadeOut']("fast");
         
         this.visibleSelectionsMask |= (1 << selection.id);
       }

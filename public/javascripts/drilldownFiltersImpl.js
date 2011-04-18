@@ -54,6 +54,40 @@ function createDrilldownFilters($) {
     }, conflict: function(obj) {
       if(obj.sections) obj = obj.sections[0];
       return $.scheduleManager.currentSchedule().isConflict(obj) ? 'conflict' : '';
+    },
+    timeSelection: function(obj) {
+      timeSelectManager = $.scheduleManager.currentSchedule().timeSelectManager;
+      
+      if (!timeSelectManager.selections.length) {
+        return true;
+      }
+      
+      if (!obj.times.length) {
+        return false;
+      }
+            
+      for (var i = 0; i < obj.times.length; ++i) {
+        var time = obj.times[i];
+        var show = false;
+        
+        for (var j = 0; j < timeSelectManager.selections.length; ++j) {
+          var selection = timeSelectManager.selections[j];
+          if (time.day == selection.day) {
+            var selectionStartCompare = (selection.startTime.hours * 60) + selection.startTime.minutes;
+            var selectionEndCompare = (selection.endTime.hours * 60) + selection.endTime.minutes;
+            if (time.start.compareValue >= selectionStartCompare && time.end.compareValue <= selectionEndCompare) {
+              show = true;
+              break;
+            }
+          }
+        }
+        
+        if (!show) {
+          return false;
+        }
+      }
+      
+      return true;
     }
   };
   $.drillDownFilters = drillDownFilters;
@@ -97,7 +131,8 @@ function createDrilldownFilters($) {
   var drillDownCallbacks = {
     sectionFilters: [
       drillDownFilters.times,
-      drillDownFilters.full
+      drillDownFilters.full,
+      drillDownFilters.timeSelection
     ],
     timeSectionFilters: [
       drillDownFilters.times,
