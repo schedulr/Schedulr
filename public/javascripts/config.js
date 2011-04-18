@@ -173,7 +173,8 @@ jQuery.config = {
       timeLabelOffset: 25,
       timeLabelDelta: 60,
       timeLabelHeight: 20,
-      cursorOffset: 5
+      cursorOffset: 5,
+      fadeDuration: 300
     },
     mouseEvent: {
       left: 1

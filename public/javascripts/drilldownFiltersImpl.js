@@ -72,6 +72,11 @@ function createDrilldownFilters($) {
         
         for (var j = 0; j < timeSelectManager.selections.length; ++j) {
           var selection = timeSelectManager.selections[j];
+          
+          if (!selection) {
+            continue;
+          }
+          
           if (time.day == selection.day) {
             var selectionStartCompare = (selection.startTime.hours * 60) + selection.startTime.minutes;
             var selectionEndCompare = (selection.endTime.hours * 60) + selection.endTime.minutes;

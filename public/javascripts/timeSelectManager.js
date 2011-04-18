@@ -6,8 +6,7 @@ var TimeSelectManager = (function($) {
       this.schedule = schedule;
       this.selections = [];
       this.visibleSelectionsMask = 0;
-      this.selectionStarted = false;
-      this.multiSelect = false;
+      this.selectionInProgress = false;
       this.source = undefined;
     },
     
@@ -35,13 +34,6 @@ var TimeSelectManager = (function($) {
     },
     
     mousedown: function(eventData) {
-      // If the user was multiselecting and they are no longer holding the control key, register it as a mouseup,
-      // meaning they are done selecting.
-      if (!eventData.ctrlKey && this.multiSelect) {
-        this.mouseup(eventData);
-        return;
-      }
-      
       this.source = $(eventData.target);
       
       // We show the canvas on which we draw the selections.  This makes sure that the schedule boxes themselves
@@ -62,32 +54,22 @@ var TimeSelectManager = (function($) {
       var normalizedTop = this.roundToNearest(y, options.selection.timeInterval);
       
       this.addSelection(normalizedLeft, normalizedTop);
-      this.selectionStarted = true;
+      this.selectionInProgress = true;
     },
     
     mouseup: function(eventData) {
-      // If they aren't holding control, and they have started a selection or had been multiselecting,
-      // then we are done.
-      if (!eventData.ctrlKey && (this.selectionStarted || this.multiSelect)) {
-        this.selectionStarted = this.multiSelect = false;
-        for (var i = 0; i < this.selections.length; ++i) {
-          //this.removeSelection(i);
-        }
-        $.drillDown.openRow(0, 0);
-      } else if (eventData.ctrlKey) {
-        var selection = this.getCurrentSelection();
-        if (selection && (selection.box.height() < options.selection.minHeight)) {
-          this.removeSelection();
-          return;
-        }
-        
-        this.multiSelect = true;
-        this.selectionStarted = false;
-      }      
+      var selection = this.getCurrentSelection();
+      if (selection && (selection.box.height() < options.selection.minHeight)) {
+        this.removeSelection(selection.id);
+        return;
+      }
+      
+      this.selectionInProgress = false;
+      $.drillDown.openRow(0, 0);  
     },
     
     mousemove: function(eventData) {
-      if (this.selectionStarted && eventData.which === options.mouseEvent.left) {
+      if (this.selectionInProgress && eventData.which === options.mouseEvent.left) {
         var selection = this.getCurrentSelection();
         if (!selection) {
           return true;
@@ -114,7 +96,7 @@ var TimeSelectManager = (function($) {
           this.removeSelection();
           this.showCurrentSelection(true);
           selection = this.getCurrentSelection();
-          
+          $.log(this.selections);
           if (!selection) {
             return true;
           }
@@ -132,9 +114,11 @@ var TimeSelectManager = (function($) {
           
           this.drawTimeLabels(selection, selectionHeight.first, selectionHeight.second);
         }
-      } else {
-        this.mouseup(eventData);
       }
+    },
+    
+    dblclick: function(eventData) {
+      this.removeAllSelections();
     },
 
     roundToNearest: function(numberToTruncate, denominator) {
@@ -148,7 +132,7 @@ var TimeSelectManager = (function($) {
      *  appropriately.
      **/
     externalMouseReleased: function(eventData) {
-      this.mouseup(eventData);
+      this.selectionInProgress = false;
     },
     
     /**
@@ -190,10 +174,10 @@ var TimeSelectManager = (function($) {
       }
       
       if (startLabel.is(":hidden")) {
-        startLabel.fadeIn("fast");
+        startLabel.fadeIn(options.selection.fadeDuration);
       }
       if (endLabel.is(":hidden")) {
-        endLabel.fadeIn("fase");
+        endLabel.fadeIn(options.selection.fadeDuration);
       }
     },
     
@@ -273,23 +257,37 @@ var TimeSelectManager = (function($) {
       var selection = undefined;
       if (index !== undefined) {
         selection = this.selections[index];
-        this.selections[index] = undefined;
       } else {
         selection = this.selections.pop();
       }
+      
       if (selection) {
+        this.visibleSelectionsMask &= ~(1 << selection.id);
+        
+        var selectingDone = false;
         var removeCallback = function(jQueryObj) {
           jQueryObj.remove();
-          if (!this.visibleSelectionsMask) {
-            this.showSelectionContainer(false);
+          if (!this.visibleSelectionsMask && !selectingDone) {
+            selectingDone = true;
+            this.endSelectionSession();
           }
         };
-        selection.box.fadeOut("fast", removeCallback.bind(this, selection.box));
-        selection.startTime.label.fadeOut("fast", removeCallback.bind(this, selection.startTime.label));
-        selection.endTime.label.fadeOut("fast", removeCallback.bind(this, selection.endTime.label));
         
-        this.visibleSelectionsMask &= ~(1 << selection.id);
+        selection.box.add(selection.startTime.label)
+                     .add(selection.endTime.label)
+                     .animate({ 'opacity': 0 }, {
+                       complete: removeCallback.wrapEvent(this),
+                       duration: options.selection.fadeDuration,
+                       queue: false
+                     });
       }
+    },
+    
+    removeAllSelections: function() {
+      for (var i = 0; i < this.selections.length; ++i) {
+        this.removeSelection(i);
+      }
+      this.showSelectionContainer(false);
     },
     
     getCurrentSelection: function() {
@@ -299,9 +297,9 @@ var TimeSelectManager = (function($) {
     showCurrentSelection: function(show) {
       var selection = this.getCurrentSelection();
       if (selection) {
-        selection.box[show ? 'fadeIn' : 'fadeOut']("fast");
-        selection.startTime.label[show ? 'fadeIn' : 'fadeOut']("fast");
-        selection.endTime.label[show ? 'fadeIn' : 'fadeOut']("fast");
+        selection.box[show ? 'fadeIn' : 'fadeOut'](options.selection.fadeDuration);
+        selection.startTime.label[show ? 'fadeIn' : 'fadeOut'](options.selection.fadeDuration);
+        selection.endTime.label[show ? 'fadeIn' : 'fadeOut'](options.selection.fadeDuration);
         
         this.visibleSelectionsMask |= (1 << selection.id);
       }
@@ -309,6 +307,12 @@ var TimeSelectManager = (function($) {
     
     showSelectionContainer: function(show) {
       show ? this.source.css({'z-index': options.containerZIndex}) : this.source.css({'z-index': 'auto'});
+    },
+    
+    endSelectionSession: function() {
+      $.log('done selecting');
+      this.selections = [];
+      this.showSelectionContainer(false);
     }
   });
 })(jQuery);
