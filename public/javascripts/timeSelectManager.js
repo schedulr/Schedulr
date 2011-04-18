@@ -58,13 +58,13 @@ var TimeSelectManager = (function($) {
     },
     
     mouseup: function(eventData) {
+      this.selectionInProgress = false;
+      
       var selection = this.getCurrentSelection();
       if (selection && (selection.box.height() < options.selection.minHeight)) {
         this.removeSelection(selection.id);
         return;
-      }
-      
-      this.selectionInProgress = false;
+      }      
       $.drillDown.openRow(0, 0);  
     },
     
@@ -163,15 +163,10 @@ var TimeSelectManager = (function($) {
         'left': selection.left
       });
       
-      // We are checking the bottom label's position and not the top because it looks
-      // like crap if it goes of the bottom of the schedule, but it can overlap the day
-      // headings.
-      if (bottomOfSelection + options.selection.timeLabelHeight < this.source.height()) {
-        endLabel.css({
-          'top': bottomOfSelection - 2,
-          'left': selection.left
-        });
-      }
+      endLabel.css({
+        'top': bottomOfSelection - 2,
+        'left': selection.left
+      });
       
       if (startLabel.is(":hidden")) {
         startLabel.fadeIn(options.selection.fadeDuration);
@@ -257,6 +252,7 @@ var TimeSelectManager = (function($) {
       var selection = undefined;
       if (index !== undefined) {
         selection = this.selections[index];
+        this.selections[index] = undefined;
       } else {
         selection = this.selections.pop();
       }
