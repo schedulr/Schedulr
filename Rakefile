@@ -4,4 +4,4 @@
 require File.expand_path('../config/application', __FILE__)
 require 'rake'
 
-SeniorProjects2009::Application.load_tasks
+Schedulr::Application.load_tasks

@@ -1,6 +1,5 @@
 desc "Deploys the CSC Site"
 task :deploy => :environment do
-  require 'Deploy'
   require 'utils.rb'
   include Schedulr
   

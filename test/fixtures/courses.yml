@@ -1,33 +1,32 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+course_1:
+  courseid: CSC 1020
+  credits: nil
+  department_id: 1
+  description: nil
+  id: 1
+  number: 1020
 
-one:
-  department_id: 
-  number: 
-  title: 
-  crn: 
-  instructor_id: 
-  comment: 
-  attributes: 
-  restrictions: 
+course_2:
+  courseid: CSC 1051
+  credits: nil
+  department_id: 1
+  description: nil
+  id: 2
+  number: 1051
 
-two:
-  department_id: 
-  number: 
-  title: 
-  crn: 
-  instructor_id: 
-  comment: 
-  attributes: 
-  restrictions:
+course_3:
+  courseid: COM 1000
+  credits: nil
+  department_id: 2
+  description: nil
+  id: 3
+  number: 1000
 
-# == Schema Info
-# Schema version: 20110414032850
-#
-# Table name: courses
-#
-#  id            :integer(4)      not null, primary key
-#  department_id :integer(4)
-#  number        :integer(4)
-#  courseid      :string(255)
-#  description   :text
-#  credits       :string(255)
+course_4:
+  courseid: COM 1101
+  credits: nil
+  department_id: 2
+  description: nil
+  id: 4
+  number: 1101
+

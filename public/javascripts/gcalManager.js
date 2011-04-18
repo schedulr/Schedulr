@@ -589,9 +589,7 @@ var GcalManager = (function($) {
             );
           }).bind(this));
         }).bind(this),
-        function(error) {
-          this.exportFailed(error);
-        }, 
+        this.exportFailed.bind(this), 
         google.gdata.calendar.CalendarEntry);
     },
     

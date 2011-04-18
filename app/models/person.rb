@@ -32,7 +32,13 @@ class Person < ActiveRecord::Base
     self.secret = create_secret
     save
     
-    Notifications.deliver_reset_link(self)
+    begin
+      Notifications.deliver_reset_link(self)
+    rescue
+      return false
+    end
+    
+    return true
   end
   
   def change_password(password)

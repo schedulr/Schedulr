@@ -22,10 +22,11 @@ class Schedule < ActiveRecord::Base
     end
       
     if person
-      unless person.shared_schedules.include? self
-        person.shared_schedules << self
-        Notifications.deliver_share(self, person)
-      end
+      return if person.id == person_id
+      return if person.shared_schedules.include? self
+      
+      person.shared_schedules << self
+      Notifications.deliver_share(self, person)
     else
       secret = ''
       20.times { secret += (rand(16)+10).to_s(36).upcase }
@@ -59,10 +60,10 @@ class Schedule < ActiveRecord::Base
     for emailShare in shares
       ActiveRecord::Base.connection.execute "DELETE FROM people_schedules WHERE schedule_id = #{emailShare.schedule_id} AND person_id = #{person.id}"
       ActiveRecord::Base.connection.execute "INSERT INTO people_schedules(schedule_id, person_id) VALUES(#{emailShare.schedule_id}, #{person.id})"
+      emailShare.destroy
     end
     
     person.save
-    share.destroy
     Mapping.new({:email => share.email, :person_id => person.id}).save
     
     true

@@ -21,8 +21,14 @@ class ApplicationController < ActionController::Base
   end
   
   def validate
-    schedule = Schedule.find params[:id]
+    schedule = Schedule.find_by_id params[:id]
+    unless schedule
+      render :text => 'Schedule not found.'
+      return false
+    end
+    
     return true if schedule && schedule.person_id == session[:user].to_i
+    
     render :text => 'Not Authorized'
     return false
   end
@@ -57,15 +63,14 @@ class ApplicationController < ActionController::Base
   
   #returns the user model of the current user
   def logged_in_user
-    unless @logged_in_user
-      if session[:user]
-        if session[:user].to_i > 0
-          @logged_in_user = Person.find session[:user].to_i
-        else
-          @logged_in_user = Person.new
-        end
+    if session[:user]
+      if session[:user].to_i < 1
+        @logged_in_user = Person.new
+      elsif !@logged_in_user || @logged_in_user.id != session[:user].to_i
+        @logged_in_user = Person.find session[:user].to_i
       end
     end
+    
     @logged_in_user
   end
 end
