@@ -66,7 +66,6 @@ var TimeSelectManager = (function($) {
     },
     
     mouseup: function(eventData) {
-      return;
       // If they aren't holding control, and they have started a selection or had been multiselecting,
       // then we are done.
       if (!eventData.ctrlKey && (this.selectionStarted || this.multiSelect)) {
@@ -170,7 +169,6 @@ var TimeSelectManager = (function($) {
       endLabel.html(endTime.string);
       
       startLabel.css({
-        'border-bottom': 0,
         'top': topOfSelection - options.selection.timeLabelHeight + 1,
         'left': selection.left
       });
@@ -180,7 +178,6 @@ var TimeSelectManager = (function($) {
       // headings.
       if (bottomOfSelection + options.selection.timeLabelHeight < this.source.height()) {
         endLabel.css({
-          'border-top': 0,
           'top': bottomOfSelection - 2,
           'left': selection.left
         });

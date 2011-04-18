@@ -17,9 +17,7 @@
   background: #548DD4;
   background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#548DD4), to(#4B7EBE));
   background: -moz-linear-gradient(top, #5894DE, #4F85C9);
-  /*border: 1px solid #0000FF;*/
-  -webkit-border-image: url(../images/border.png) 9 round;
-  /*border-radius: 5px;*/
+  border: 1px solid #0000FF;
   height: 0px;
   opacity: 0.6;
   position: absolute;
@@ -29,7 +27,7 @@
 .startTimeLabel, .endTimeLabel {
   background: #FEFEFE;
   background-color: rgba(255, 255, 255, .7);
-  border: 1px dotted #0000FF;
+  border: 1px solid rgba(0, 0, 255, 0.6);
   cursor: default;
   display: none;
   font-size: 12px;
@@ -38,6 +36,16 @@
   position: absolute;
   text-align: center;
   width: 99px;
+}
+
+.startTimeLabel {
+  border-bottom: 0px;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.endTimeLabel {
+  border-top: 0px;
+  border-radius: 0px 0px 5px 5px;
 }
 
 .scheduleInnerContainer {
