@@ -52,6 +52,10 @@
   position: relative;
   width: 638px;
   
+  &.haveSaturday {
+    width: 742px;
+  }
+  
   .scheduleCell {
     position: absolute;
     width: 98px;
@@ -63,6 +67,7 @@
   .scheduleColumn3 { left: 318px;}
   .scheduleColumn4 { left: 424px;}
   .scheduleColumn5 { left: 530px;}
+  .scheduleColumn6 { left: 636px;}
   
   /*Column Headings */
   .scheduleDay {
@@ -70,6 +75,7 @@
     font-weight: bold;
     text-align: center;
     padding: 0 3px 3px 3px;
+    top: 6px;
   }
   
   /*Row Headings */

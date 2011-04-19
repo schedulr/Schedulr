@@ -162,8 +162,10 @@ var Schedule = (function($) {
         allTimes.push(otherObjs[c].date);
       }
 
+      var haveSaturday = false;
       //determine the minimum and maximum time of any course on the schedule
       for(var c = 0; c < allTimes.length; c++) {
+        if(allTimes[c].day === 5) haveSaturday = true;
         if(allTimes[c].start.compareTo(startTime) < 0) startTime = allTimes[c].start;
         if(allTimes[c].end.compareTo(endTime) > 0) endTime = allTimes[c].end;
       }
@@ -189,7 +191,8 @@ var Schedule = (function($) {
         items: items,
         name: this.shareName(),
         credits: this.credits(),
-        otherObjs: otherObjs
+        otherObjs: otherObjs,
+        haveSaturday: haveSaturday
       }));
       
       this.bindEvents(table, items);

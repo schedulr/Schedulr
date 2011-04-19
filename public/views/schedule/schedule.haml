@@ -1,13 +1,15 @@
 %h3= h(name)
 
-.scheduleInnerContainer{:style => 'height: '+height+'px'}
+.scheduleInnerContainer{:style => 'height: '+height+'px', :class => (haveSaturday ? 'haveSaturday' : '')}
   .timeSelectContainer{:style => 'height: '+(height - 23)+'px'}
   .credits Credits: #{credits}
   
   - var days = $w('Monday Tuesday Wednesday Thursday Friday');
     -# render the day headings at the top
     - for day in days using c
-      .scheduleCell.scheduleDay{:class => 'scheduleColumn'+(c+1), :style => 'top: 6px;'}= day
+      .scheduleCell.scheduleDay{:class => 'scheduleColumn'+(c+1)}= day
+    - if haveSaturday
+      .scheduleCell.scheduleDay.scheduleColumn6 Saturday
         
   - if endTime.hours === 0
     .noCourses{:style => 'position: absolute; top: 28px; left: 70px;'} Whoa, goin for a light load?  You ain't got any of 'em learnin things on your schedule yet!
