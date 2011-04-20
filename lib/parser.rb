@@ -13,12 +13,15 @@ module Schedulr
   class Parser
     include Schedulr
     
+    attr_accessor :term
+    
     @stageTime = Time.now
     @stageLabel = 'Initial'
     
     def self.parseAll
       #terms = Term.all(:conditions => ['id > 14'])
-      terms = [Term.find(1)]
+      #terms = [Term.find(1), Term.find(6)]
+      terms = Term.all
       for term in terms
         puts "Parsing #{term.code}"
         parser = Parser.new term
@@ -77,7 +80,7 @@ module Schedulr
     
     def downloadDepartmentData(department, parse, reDownload)
       Rails.logger.debug "Download Data for #{department.code}"
-      #thread = Thread.new do
+      thread = Thread.new do
         FileUtils.mkdir_p(File.join(Rails.root, "parser/html/#{department.code}"))
         filename = File.join(Rails.root, "parser/html/#{department.code}/#{@code}.html")
         movedFilename = File.join(Rails.root, "parser/html/#{department.code}/#{@code}_#{Time.now.to_i}.html")
@@ -95,7 +98,7 @@ module Schedulr
         @files << {:data => data, :department => department}
         @mutex.unlock
         Rails.logger.debug "Received Data for #{department.code}"
-      #end
+      end
     end
     
     def loadData

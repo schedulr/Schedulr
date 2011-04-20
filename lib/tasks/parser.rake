@@ -10,10 +10,8 @@ require 'uri'
 desc 'Grabs the courses from novasis and updates the db.'
 task :parse_all => :environment do
   Schedulr::handleErrors do
-    obj = Schedulr::JsObject.new
     Schedulr::Parser.parseAll do |parser|
       parser.parse
-      obj.generate(parser.term)
       parser.parseEnrollment(true)
     end
   end

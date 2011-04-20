@@ -14,8 +14,6 @@ module Schedulr
       data = Hpricot(data)
       count = 0
       (data/'option').each do |option|
-        puts option.inspect
-        
         code = option.attributes['value']
         name = option.inner_text.strip
         next if code.length == 0 || name == 'None' || name.length == 0

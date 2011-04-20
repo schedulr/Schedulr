@@ -7,6 +7,8 @@ module Schedulr
   class Parser    
     def parse
       Rails.logger.info "Executing: parseCourses for #{@term.code} at #{Time.now}"
+      @foundSections = []
+      
       doParse(true) do |file|
         @department = file[:department]
         courses = parse_courses file[:data]  
@@ -16,6 +18,7 @@ module Schedulr
     
         stage 'Merging'
         mergeSections(courses)
+        @foundSections = @foundSections + courses
     
         stage 'Saving'
         courses.each do |course|
@@ -25,6 +28,8 @@ module Schedulr
       
         stage 'Initial'
       end
+        
+      deleteOldSections
     end
     
     def stage(label)
@@ -37,12 +42,16 @@ module Schedulr
     def deleteOldSections
       dict = {}
       @foundSections.each{|section| dict[section.crn] = section }
+      sections = @sections.map{|crn, section| section}.compact.reject{|section| !section.crn || dict[section.crn] != nil}
       
-      for section in @sections
-        if section && section.crn && !dict[section.crn]
-          Rails.logger.info "Deleting Section: #{section.inspect}"
-          section.full_destroy
-        end
+      if sections.length < 10
+        puts "!!!!!!!!!!#{sections.inspect}"
+        sections.each{|section| section.full_destroy}
+      else
+        message = "!"*80
+        message += "\nMore than 10 sections were going to be deleted:\n#{sections.map{|section| section.id}.join(',')}"
+        puts message
+        Rails.logger.info message
       end
     end
     

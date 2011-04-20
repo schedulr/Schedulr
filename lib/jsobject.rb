@@ -52,6 +52,7 @@ module Schedulr
       obj = JsObject.new
       terms = Term.all
       for term in terms
+        puts "#{term.code} at #{Time.now}"
         obj.generate(term)
       end
     end

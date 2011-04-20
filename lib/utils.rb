@@ -17,7 +17,7 @@ module Schedulr
   def download(url, filename, parse=true, force=false, reDownload=true)
     FileUtils.mkdir_p(File.join(Rails.root, 'parser/html'))
     
-    if force || (reDownload && ENV['use_cache'] != 'true')
+    if force || (reDownload && ENV['use_cache'] != 'true') || !File.exists?(filename)
       quiet = ENV['quiet'] ? '-q' : ''
       quiet = '-q'
       path = Rails.env == 'production' ? '/usr/bin/' : ''
