@@ -4,7 +4,6 @@
 # Table name: terms
 #
 #  id         :integer(4)      not null, primary key
-#  termid     :string(255)
 #  code       :string(255)
 #  year       :string(255)
 #  semester   :string(255)
@@ -21,6 +20,26 @@ class Term < ActiveRecord::Base
   #returns the name of the semester along with the specific summer session if applicable
   def full_name
     name
+  end
+  
+  def self.by_year
+    terms = Term.order(:code).all
+    dict = {}
+    terms.each {|term| (dict[term.year] ||= []) << term}
+    
+    dict
+  end
+  
+  def self.create_from_parser(semester, year, code)
+    return nil if semester == 'Summer' # this can be added later, but I'm not parsing Novasis' summer session format
+    term = Term.new :semester => semester, :year => year.to_i, :code => code, :active => false
+    previousTerm = Term.find_by_year_and_semester(semester, term.year-1)
+    previousTerm = Term.find_by_semester(semester) unless previousTerm
+    
+    term.start_date = Date.civil(term.year, previousTerm.start_date.month, previousTerm.start_date.day)
+    term.end_date = Date.civil(term.year, previousTerm.end_date.month, previousTerm.end_date.day)
+    
+    term.save
   end
   
   #returns every term in the database that we have course schedule information for
@@ -67,9 +86,7 @@ class Term < ActiveRecord::Base
     
     if nextSemester == 'Fall'
       next_term.code = "#{next_term.year.to_i+1}20"
-      next_term.termid = "F#{(next_term.year)%100}"
     else
-      next_term.termid = "S#{(next_term.year.to_i)%100}"
       next_term.code = "#{next_term.year}30"
     end
     

@@ -20,6 +20,6 @@
     
     google.load('gdata', 1);
 
-= javascript_include_tag 'generated/data'
+= javascript_include_tag "generated/#{@term.code}/data"
   
 = yield :javascripts

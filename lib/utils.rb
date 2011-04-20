@@ -14,22 +14,22 @@ module Schedulr
     Net::SSH.start(settings[:domain], settings[:user], :keys => [settings[:sshkey]])
   end
   
-  
-  def download(url, filename, parse=true, force=false)
+  def download(url, filename, parse=true, force=false, reDownload=true)
     FileUtils.mkdir_p(File.join(Rails.root, 'parser/html'))
     
-    if force ||  ENV['use_cache'] != 'true'
+    if force || (reDownload && ENV['use_cache'] != 'true')
       quiet = ENV['quiet'] ? '-q' : ''
       quiet = '-q'
       path = Rails.env == 'production' ? '/usr/bin/' : ''
       cmd = "#{path}wget #{quiet} -O #{filename} -T 1000 \"#{url}\" \n"
+      puts cmd
       `#{cmd}`
     end
     
     data = File.read(filename)
     return data unless parse
       
-    lowerCaseStuff = %w{CLASS <A A> <TR TR> <TD TD> <TH TH> <TABLE TABLE> HREF TITLE NAME TARGET <SELECT SELECT> <OPTION VALUE ID=}
+    lowerCaseStuff = %w{CLASS <A A> <TR TR> <TD TD> <TH TH> <TABLE TABLE> HREF TITLE NAME TARGET <SELECT SELECT> <OPTION OPTION> VALUE ID=}
     lowerCaseStuff.each{|attribute| data = data.gsub(attribute, attribute.downcase)}
     data.gsub("A&B;", "A&amp;B;").gsub("&nbsp;", " ")
   end
@@ -50,10 +50,11 @@ module Schedulr
     end
   end
   
-  def handleErrors
+  def self.handleErrors
     if Rails.env == 'development' || ENV['print_errors'] == 'true'
       yield
     else
+      Rails.logger.auto_flushing = true
       begin
         yield
       rescue Exception => e

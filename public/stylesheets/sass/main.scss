@@ -83,6 +83,16 @@ body {
     left: 365px;
     position: absolute;
     top: 20px;
+    
+    #changeTerm {
+      color: #FFFFFF;
+      font-size: 13px;
+      vertical-align: baseline;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
   
   #nav {

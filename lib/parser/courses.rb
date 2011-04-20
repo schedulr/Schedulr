@@ -4,10 +4,9 @@ require 'open-uri'
 require 'utils.rb'
 
 module Schedulr
-  class Parser
-    def parse(bits)
-      Rails.logger.info "Executing: parseCourses at #{Time.now}"
-      @parseDepartments = Department.all
+  class Parser    
+    def parse
+      Rails.logger.info "Executing: parseCourses for #{@term.code} at #{Time.now}"
       doParse(true) do |file|
         @department = file[:department]
         courses = parse_courses file[:data]  
@@ -21,7 +20,7 @@ module Schedulr
         stage 'Saving'
         courses.each do |course|
           course.term = @term
-          course.save
+          course.save if course.changed? || course.new_record?
         end
       
         stage 'Initial'
@@ -30,41 +29,25 @@ module Schedulr
     
     def stage(label)
       Rails.logger.debug "#{@stageLabel} #{@department.code if @department}: #{(Time.now.to_i() - @stageTime.to_i())}"
+      puts "#{@stageLabel} #{@department.code if @department}: #{(Time.now.to_i() - @stageTime.to_i())}"
       @stageTime = Time.now
       @stageLabel = label
     end
     
-    def downloadDepartmentData(department, parse)
-      Rails.logger.debug "Download Data for #{department.code}"
-      thread = Thread.new do
-        FileUtils.mkdir_p(File.join(Rails.root, "parser/html/#{department.code}"))
-        filename = File.join(Rails.root, "parser/html/#{department.code}/#{@code}.html")
-        movedFilename = File.join(Rails.root, "parser/html/#{department.code}/#{@code}_#{Time.now.to_i}.html")
-        
-        url = "http://novasis.villanova.edu/pls/bannerprd/bvckschd.p_get_crse_unsec?begin_ap=a&begin_hh=0&begin_mi=0&end_ap=a&end_hh=0&end_mi=0&sel_attr=dummy&sel_attr=%25&sel_camp=dummy&sel_crse=&sel_day=dummy&sel_from_cred=&sel_insm=dummy&sel_instr=dummy&sel_instr=%25&sel_levl=dummy&sel_ptrm=dummy&sel_schd=dummy&sel_sess=dummy&sel_subj=dummy&sel_subj=#{department.code}&sel_title=&sel_to_cred=&term_in=#{@code}"
-        
-        data = download(url, filename, parse)
+    def deleteOldSections
+      dict = {}
+      @foundSections.each{|section| dict[section.crn] = section }
       
-        unless ENV['use_cache']
-          #remove the file so if wget ever fails we error out rather than using old data
-          #FileUtils.mv(filename, movedFilename)
+      for section in @sections
+        if section && section.crn && !dict[section.crn]
+          Rails.logger.info "Deleting Section: #{section.inspect}"
+          section.full_destroy
         end
-        
-        @mutex.lock
-        @files << {:data => data, :department => department}
-        @mutex.unlock
-        Rails.logger.debug "Received Data for #{department.code}"
       end
     end
     
-    def cleanup
-      stage 'cleanup'
-      ActiveRecord::Base.connection.execute "delete from course_sections_schedules where course_section_id NOT IN (select id from course_sections)"
-    end
-    
     def mergeSections(sections)
-      currentSectionsHash, oldSectionsHash, oldDepartmentSections = {}, @sections, @departmentSections[@department.code]
-      oldDepartmentSections ||= {}
+      currentSectionsHash, oldSectionsHash = {}, @sections
       i = 0
       
       for section in sections
@@ -90,10 +73,6 @@ module Schedulr
           currentSectionsHash[section.crn] = section
         end
         i += 1
-      end
-      
-      oldDepartmentSections.each do |key, value|
-        value.destroy if value && !currentSectionsHash[key]
       end
     end
     
@@ -357,7 +336,7 @@ module Schedulr
       # grabs the preqrequistes, if any
       if prereqLoc
         prerequisites = timeInfo[prereqLoc + 18.. -1]
-        section.prerequisites = prerequisites.strip
+        section.prerequisites = prerequisites.strip if prerequisites
       end
       
       section

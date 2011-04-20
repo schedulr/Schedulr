@@ -8,48 +8,48 @@ require 'net/http'
 require 'uri'
 
 desc 'Grabs the courses from novasis and updates the db.'
-task :parse_courses => :environment do  
-  include Schedulr
-  Rails.logger.auto_flushing = true
-  handleErrors do
-    parser = Parser.new
-    parser.updateDepartments
-    parser.parse([0, 0, -1])
+task :parse_all => :environment do
+  Schedulr::handleErrors do
+    obj = Schedulr::JsObject.new
+    Schedulr::Parser.parseAll do |parser|
+      parser.parse
+      obj.generate(parser.term)
+      parser.parseEnrollment(true)
+    end
   end
-  Rails.logger.flush
+end
+
+desc 'Grabs the courses from novasis and updates the db.'
+task :parse_current_terms => :environment do
+  Schedulr::handleErrors do
+    Schedulr::Parser.parseCurrentTerms do |parser|
+      parser.parse
+      parser.parseEnrollment(true)
+    end
+  end
 end
 
 desc 'Parse Enrollment'
 task :parse_enrollment => :environment do
-  include Schedulr
-  Rails.logger.auto_flushing = true
-  handleErrors do
-    parser = Parser.new
-    parser.parseEnrollment
+  Schedulr::handleErrors do
+    Schedulr::Parser.parseCurrentTerms do |parser|
+      parser.parseEnrollment
+    end
   end
-  Rails.logger.flush
 end
 
-desc 'Parse Descriptions'
-task :parse_descriptions => :environment do
-  include Schedulr
-  Rails.logger.auto_flushing = true
-  handleErrors do
-    parser = Parser.new
-    parser.updateDescriptions
+desc 'Parse Terms'
+task :parse_terms => :environment do
+  Schedulr::handleErrors do
+    parser = Schedulr::Parser.new.updateTerms
   end
-  Rails.logger.flush
 end
-
 
 desc 'Creates a js file of the data.'
 task :create_jsfile => :environment do
-  include Schedulr
-  Rails.logger.auto_flushing = true
-  handleErrors do
-    JsObject.create
+  Schedulr::handleErrors do
+    Schedulr::JsObject.create_all
   end
-  Rails.logger.flush
 end
 
 desc 'Manages the parser on different machines'

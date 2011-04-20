@@ -24,7 +24,15 @@ class CourseSection < ActiveRecord::Base
   has_and_belongs_to_many :instructors
   has_and_belongs_to_many :requirements
   has_many :course_section_times, :dependent => :destroy
+  
   DAYS = %w{M T W R F S U}
+  
+  def full_destroy
+    ActiveRecord::Base.connection.execute "DELETE FROM course_sections_schedules WHERE course_section_id = #{id}"
+    ActiveRecord::Base.connection.execute "DELETE FROM course_sections_instructors WHERE course_section_id = #{id}"
+    ActiveRecord::Base.connection.execute "DELETE FROM course_sections_requirements WHERE course_section_id = #{id}"
+    self.destroy
+  end
   
   # returns the section times as a string
   def to_s

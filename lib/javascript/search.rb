@@ -34,7 +34,7 @@ module Schedulr
     
     def buildDict(searchDict)
       @sections.each{|section| addMatch([section.title], searchDict, section, :section) }
-      @courses.each{|course| addMatch([course.description], searchDict, course, :course) }
+      @termCourses.each{|course| addMatch([course.description], searchDict, course, :course) }
       
       searchDict
     end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110414032850) do
+ActiveRecord::Schema.define(:version => 20110420043241) do
 
   create_table "course_section_times", :force => true do |t|
     t.integer "course_section_id"
@@ -21,8 +21,6 @@ ActiveRecord::Schema.define(:version => 20110414032850) do
     t.integer "end_minute"
     t.string  "location"
   end
-
-  add_index "course_section_times", ["course_section_id"], :name => "course_section_id"
 
   create_table "course_sections", :force => true do |t|
     t.integer "course_id"
@@ -44,24 +42,15 @@ ActiveRecord::Schema.define(:version => 20110414032850) do
     t.integer "instructor_id"
   end
 
-  add_index "course_sections_instructors", ["course_section_id", "instructor_id"], :name => "course_section_id"
-  add_index "course_sections_instructors", ["instructor_id", "course_section_id"], :name => "instructor_id"
-
   create_table "course_sections_requirements", :id => false, :force => true do |t|
     t.integer "course_section_id"
     t.integer "requirement_id"
   end
 
-  add_index "course_sections_requirements", ["course_section_id", "requirement_id"], :name => "course_section_id"
-  add_index "course_sections_requirements", ["requirement_id", "course_section_id"], :name => "requirement_id"
-
   create_table "course_sections_schedules", :id => false, :force => true do |t|
     t.integer "course_section_id"
     t.integer "schedule_id"
   end
-
-  add_index "course_sections_schedules", ["course_section_id", "schedule_id"], :name => "course_section_id"
-  add_index "course_sections_schedules", ["schedule_id", "course_section_id"], :name => "schedule_id"
 
   create_table "courses", :force => true do |t|
     t.integer "department_id"
@@ -71,15 +60,10 @@ ActiveRecord::Schema.define(:version => 20110414032850) do
     t.string  "credits"
   end
 
-  add_index "courses", ["department_id"], :name => "department_id"
-
   create_table "departments", :force => true do |t|
     t.string "code"
     t.string "name"
   end
-
-  add_index "departments", ["code"], :name => "code"
-  add_index "departments", ["name"], :name => "name"
 
   create_table "feedbacks", :force => true do |t|
     t.integer  "rating"
@@ -97,14 +81,10 @@ ActiveRecord::Schema.define(:version => 20110414032850) do
     t.datetime "updated_at"
   end
 
-  add_index "feedbacks", ["person_id"], :name => "person_id"
-
   create_table "instructors", :force => true do |t|
     t.string "name"
     t.string "email"
   end
-
-  add_index "instructors", ["name"], :name => "name"
 
   create_table "mappings", :force => true do |t|
     t.string   "email"
@@ -145,6 +125,7 @@ ActiveRecord::Schema.define(:version => 20110414032850) do
     t.integer "person_id"
     t.string  "name",      :default => ""
     t.string  "gcal_id"
+    t.integer "term_id"
   end
 
   add_index "schedules", ["person_id"], :name => "user_id"
@@ -178,7 +159,6 @@ ActiveRecord::Schema.define(:version => 20110414032850) do
   add_index "shares", ["secret"], :name => "secret"
 
   create_table "terms", :force => true do |t|
-    t.string  "termid"
     t.string  "code"
     t.string  "year"
     t.string  "semester"

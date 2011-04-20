@@ -3,22 +3,27 @@
  * At the bottom is a single function that is run on every page.
  * The setupSchedule and setupSemester functions are used for setting up the two pages respectively.
  */
- 
- 
-// creates a url to break the cache
-window.image_path = function(src) {
-  return src+"?"+(jQuery.config.imageVersion);
-};
 
-// let people know they have been logged out if an ajax request fails
-window.loggedOut = function() {
-  jQuery.error("Unfortunately you have been logged out of Schedulr.  You should refresh the page or click <a href='/login' target='_blank'>here</a> to login again.");
-};
-
-// safely log a message
-jQuery.log = function(msg) {
-  window.console && console.log && console.log(msg);
-}
+(function($) {
+  // creates a url to break the cache
+  window.image_path = function(src) {
+    return src+"?"+($.config.imageVersion);
+  };
+  
+  // let people know they have been logged out if an ajax request fails
+  window.loggedOut = function() {
+    $.error("Unfortunately you have been logged out of Schedulr.  You should refresh the page or click <a href='/login' target='_blank'>here</a> to login again.");
+  };
+  
+  // safely log a message
+  $.log = function(msg) {
+    window.console && console.log && console.log(msg);
+  }
+  
+  $("#changeTerm").click(function() {
+    $.messageString("Change Semester", $("#allTerms").html(), 'changeTermsPopup');
+  });
+})(jQuery);
  
 function setupSchedule($) {
   Shadowbox.init();

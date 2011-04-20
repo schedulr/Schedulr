@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   layout 'main'
   
   helper :all # include all helpers, all the time
+  before_filter :load_term
   
   # this protects from csrf attacks
   # the js code will become much more complicated if this is enabled
@@ -12,6 +13,18 @@ class ApplicationController < ActionController::Base
   #protect_from_forgery # See ActionController::RequestForgeryProtection for details
   
   protected
+  def load_term
+    if params[:term_id]
+      session[:term] = params[:term_id].to_i
+    end
+    
+    if session[:term]
+      @term = Term.find session[:term]
+    else
+      @term = Term.schedulr_term
+    end
+  end
+  
   def ajax_response(data, partialTemplate=nil)
     @data = data
     @logged_in = logged_in

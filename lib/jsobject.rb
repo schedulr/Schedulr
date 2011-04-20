@@ -7,6 +7,12 @@ def e(str)
   (str || '').to_s.gsub(/(\\|<\/|\r\n|[\n\r"'])/) { JS_ESCAPE_MAP[$1] }
 end
 
+module Enumerable
+  def in_term(term)
+    self.reject{|item| item.term_id != term.id}
+  end
+end
+
 module Schedulr
   class JsObject
     OBJNAME = 'd'
@@ -14,11 +20,7 @@ module Schedulr
     TIMES, SECTIONS, INSTRUCTORS, DEPARTMENTS, COURSES, REQUIREMENTS, DATES, STRINGS = %w{t s i e c r a g}
     
     def initialize
-      @term = Term.schedulr_term
-      @currentTerm = Term.current_term
-      
       @departments = Department.all :order => 'name ASC', :include => {:courses => :course_sections}
-      @sections = CourseSection.all :conditions => ['term_id = ?', @term.id], :include => [:requirements, :instructors, :course_section_times, :course]
       @courses = Course.all(:include => [:course_sections, :department]).reject{|course| course.course_sections.length == 0}
       @instructors = Instructor.all :order => 'name ASC', :include => :course_sections
       @requirements = Requirement.all :include => :course_sections
@@ -27,19 +29,31 @@ module Schedulr
       @courses.each{|course| @coursesDict[course.id] = course}
     end
     
-    def self.create
-      Rails.logger.info "Executing: createJsfile at #{Time.now}"
+    def generate(term)
+      @term = term
+      @sections = CourseSection.all :conditions => ['term_id = ?', @term.id], :include => [:requirements, :instructors, :course_section_times, :course]
+      @termCourses = @courses.reject{|course| course.course_sections.in_term(term).length == 0}
       
-      obj, data = JsObject.new, []
-      obj.createJsObject(data)
-      obj.createSearchObject(data)
+      Rails.logger.info "Executing: createJsfile for #{term.code} at #{Time.now}"
+      
+      data = []
+      createJsObject(data)
+      createSearchObject(data)
       
       data = data.join("\n")
       data.force_encoding("UTF-8").encode!
       
-      dir = File.join(Rails.root, 'public/javascripts/generated')
+      dir = File.join(Rails.root, "public/javascripts/generated/#{term.code}")
       FileUtils.mkdir_p(dir)
       File.open(File.join(dir, 'data.js'), 'w') {|f| f.write(data) }
+    end
+    
+    def self.create_all
+      obj = JsObject.new
+      terms = Term.all
+      for term in terms
+        obj.generate(term)
+      end
     end
   end
 end

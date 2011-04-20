@@ -6,6 +6,7 @@ class ScheduleController < ApplicationController
   
   def new
     @schedule = Schedule.new
+    @schedule.term = @term
     @schedule.person = logged_in_user
     @schedule.save
     ajax_response :status => 'success', :data => @schedule.id
@@ -77,8 +78,8 @@ class ScheduleController < ApplicationController
   end
   
   def share_data
-    @myShared = Schedule.where(:person_id => session[:user].to_i).includes(:shares, :people).all
-    @sharedWithMe = logged_in_user.shared_schedules
+    @myShared = Schedule.where(:person_id => session[:user].to_i, :term_id => @term.id).includes(:shares, :people).all
+    @sharedWithMe = logged_in_user.shared_schedules.in_term(@term)
     if @sharedWithMe.length > 0
       @sharedWithMe = Schedule.all(:conditions => ["id IN (#{@sharedWithMe.map{|schedule| schedule.id}.join(',')})"], :include => [:person, :course_sections])
     end

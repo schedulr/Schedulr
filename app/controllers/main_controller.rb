@@ -5,7 +5,7 @@ class MainController < ApplicationController
 
   def index
     @nav = true
-    @schedules = Schedule.all :conditions => ['person_id = ?', logged_in_user.id], :include => [:course_sections]
+    @schedules = Schedule.all :conditions => ['term_id = ? AND person_id = ?', @term.id, logged_in_user.id], :include => [:course_sections]
     @person = logged_in_user
   end
   

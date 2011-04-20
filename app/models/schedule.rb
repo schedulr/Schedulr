@@ -13,6 +13,7 @@ class Schedule < ActiveRecord::Base
   has_and_belongs_to_many :course_sections
   has_and_belongs_to_many :people
   has_many :shares
+  belongs_to :term
   
   def share(email)
     person = Person.find_by_email(email)

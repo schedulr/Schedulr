@@ -89,7 +89,7 @@ module Schedulr
       data, dict, indexDict = [], {}, {}
       
       @sections.each{|section| data << section.restrictions << section.notes << section.comment << section.prerequisites}
-      @courses.each{|course| data << course.credits << course.description }
+      @termCourses.each{|course| data << course.credits << course.description }
       data.each{|str| dict[str] ||= 0; dict[str] += 1}
       
       dict.reject{|word, count| count <= 1}.map{|word, count| word}.each_with_index{|word, index| indexDict[word] = index}
@@ -118,11 +118,11 @@ module Schedulr
     def createCourses(str, strings, courseTitles)
       str << "d.courses = {};"
   
-      courses = @courses.map{|course| "#{course.id}:{courseid:'#{course.courseid}',id:#{course.id},department_id:#{course.department_id},number: #{course.number},title:'#{course.number}: #{courseTitles[course.id]}',department:#{DEPARTMENTS}[#{course.department_id}],credits:#{printString course.credits, strings},description:#{printString course.description, strings}}"}
+      courses = @termCourses.map{|course| "#{course.id}:{courseid:'#{course.courseid}',id:#{course.id},department_id:#{course.department_id},number: #{course.number},title:'#{course.number}: #{courseTitles[course.id]}',department:#{DEPARTMENTS}[#{course.department_id}],credits:#{printString course.credits, strings},description:#{printString course.description, strings}}"}
       str << "d.courses.dict = {#{courses.join(",\n")}};"
       str << "var #{COURSES} = d.courses.dict;"
       
-      courses = @courses.map{|course| "'#{course.courseid}':#{COURSES}[#{course.id}]"}
+      courses = @termCourses.map{|course| "'#{course.courseid}':#{COURSES}[#{course.id}]"}
       str << "d.courses.courseid = {#{courses.join(',')}};"
     end
     
@@ -267,8 +267,8 @@ module Schedulr
     
     def referenceSectionsInCourses
       #create an array of each of the course sections for each course
-      @courses.map do |course|
-        s = course.course_sections.map{|section| section.term_id == @term.id ? "#{SECTIONS}[#{section.id}]" : nil}.compact
+      @termCourses.map do |course|
+        s = course.course_sections.in_term(@term).map{|section| section.term_id == @term.id ? "#{SECTIONS}[#{section.id}]" : nil}.compact
         "#{COURSES}[#{course.id}].sections=[#{s.join(',')}];"
       end
     end
@@ -277,7 +277,7 @@ module Schedulr
       #create arrays of the courses and course sections for each professor
       #for some reason eager loading of courses does not work here
       @instructors.map do |instructor|
-        sections = instructor.course_sections.reject{|section| section.term_id != @term.id}
+        sections = instructor.course_sections.in_term(@term).reject{|section| section.term_id != @term.id}
         if sections.length > 0
           sections = sections.sort{|a, b| @coursesDict[a.course_id].courseid <=> @coursesDict[b.course_id].courseid}
           
@@ -294,7 +294,7 @@ module Schedulr
       #create arrays of the courses and course sections for each requirement
       #for some reason eager loading of courses does not work here
       @requirements.map do |requirement|
-        sections = requirement.course_sections.reject{|section| section.term_id != @term.id}
+        sections = requirement.course_sections.in_term(@term).reject{|section| section.term_id != @term.id}
         if sections.length > 0
           sections = sections.sort{|a, b| @coursesDict[a.course_id].courseid <=> @coursesDict[b.course_id].courseid}
         

@@ -4,16 +4,14 @@ require 'open-uri'
 require 'utils.rb'
 
 module Schedulr
-  class Parser
-    def parseEnrollment
-      Rails.logger.info "Executing: parseEnrollment at #{Time.now}"
+  class Parser    
+    def parseEnrollment(reDownload=true)
+      Rails.logger.info "Executing: parseEnrollment for #{@term.code} at #{Time.now}"
       t = Time.now
       t = t.strftime("%I:%M %p")
       
-      @parseDepartments = Department.all(:order => 'name')
-      #@parseDepartments = [Department.find_by_code('CSC')]
       sections = {}
-      CourseSection.all.each{|section| sections[section.crn] = section}
+      CourseSection.where(:term_id => @term.id).all.each{|section| sections[section.crn] = section}
       
       crn, enrollment = nil
       regex = /(crn\:\s*[0-9]+)|(enrollment\:[^\.]+\.)/
@@ -22,7 +20,7 @@ module Schedulr
       
       data = []
       
-      doParse(false) do |file|
+      doParse(false, reDownload) do |file|
         department = file[:department]
         str = file[:data].downcase
         
@@ -71,7 +69,7 @@ module Schedulr
       str = data.map{|section| "#{section[0]}:[#{section[1]},#{section[2]}]"}.join(',')
       str = "$.enrollmentTime = '#{t}'; $.enrollment={#{str}}; $.enrollmentManager.update();"
       
-      dir = File.join(Rails.root, 'public/javascripts/generated')
+      dir = File.join(Rails.root, "public/javascripts/generated/#{@term.code}")
       FileUtils.mkdir_p(dir)
       File.open(File.join(dir, 'enrollment.js'), 'w') {|f| f.write(str) }
     end

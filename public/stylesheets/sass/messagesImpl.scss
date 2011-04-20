@@ -134,3 +134,14 @@
   
   width: 500px;
 }
+
+.changeTermsPopup {
+  width: 300px;
+  
+  .changeTermYear {
+    float: left;
+    margin-left: 2%;
+    margin-right: 2%;
+    width: 45%;
+  }
+}

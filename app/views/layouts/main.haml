@@ -10,7 +10,9 @@
     #top
       #logo
         %img{:src => image_path('/images/layout/logoExport.png')}
-      #logoTerm= Term.schedulr_term.full_name
+      #logoTerm
+        = @term.full_name
+        %a#changeTerm{:href => "javascript:void(0);"} (change)
       #nav
         %ul
           - if @nav
@@ -43,5 +45,12 @@
       
     #footer
       Developed by <a href='http://aj.palkovic.net'>AJ Palkovic</a> and Taylor Clifton.
+    #allTerms{:style => 'display: none;'}
+      - Term.by_year.each do |year, terms|
+        .changeTermYear
+          %h3= terms[0].year
+          - for term in terms
+            %a{:href => "?term_id=#{term.id}"}= term.semester
+      .clear
 
     = partial 'includes/javascripts'
