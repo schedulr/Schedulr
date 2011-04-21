@@ -56,4 +56,6 @@ Schedulr::Application.configure do
     :ignore_exceptions => [
       AbstractController::ActionNotFound
     ]
+  
+  config.threadsafe! if ENV['threaded'] == 'true'
 end

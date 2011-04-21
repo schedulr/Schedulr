@@ -23,12 +23,12 @@ module Schedulr
         stage 'Saving'
         courses.each do |course|
           course.term = @term
-          course.save if course.changed? || course.new_record?
+          @queue.add course
         end
       
         stage 'Initial'
       end
-        
+      
       deleteOldSections
     end
     

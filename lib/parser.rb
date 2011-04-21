@@ -8,11 +8,10 @@ require 'parser/descriptions.rb'
 require 'parser/enrollment.rb'
 require 'parser/courses.rb'
 require 'parser/terms.rb'
+require 'queue.rb'
 
 module Schedulr
-  class Parser
-    include Schedulr
-    
+  class Parser    
     attr_accessor :term
     
     @stageTime = Time.now
@@ -22,11 +21,14 @@ module Schedulr
       #terms = Term.all(:conditions => ['id > 14'])
       #terms = [Term.find(1), Term.find(6)]
       terms = Term.all
+      
+      queue = Schedulr::ThreadedQueue.create{|course| course.save}
       for term in terms
         puts "Parsing #{term.code}"
-        parser = Parser.new term
+        parser = Parser.new term, queue
         yield parser
       end
+      queue.complete
     end
     
     def self.parseCurrentTerms
@@ -34,16 +36,20 @@ module Schedulr
       terms = Term.where(:year => [term.year, term.year+1])
       terms = terms + Term.where(:year => term.year-1) if term.semester == 'Spring'
       
+      queue = Schedulr::ThreadedQueue.create{|course| course.save}
       for term in terms
         puts "Parsing Current Term #{term.code}"
-        parser = Parser.new term
+        parser = Parser.new term, queue
         yield parser
       end
+      queue.complete
     end
     
-    def initialize(term=Term.schedulr_term)
+    def initialize(term=Term.schedulr_term, queue=nil)
       @term = term
       @code = @term.code
+      @queue = queue
+      
       loadData
       
       @parseDepartments = Department.all(:order => 'name')

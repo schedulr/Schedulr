@@ -32,4 +32,6 @@ Schedulr::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+  
+  config.threadsafe! if ENV['threaded'] == 'true'
 end

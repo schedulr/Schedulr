@@ -23,5 +23,7 @@ Schedulr::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
+  
+  config.threadsafe! if ENV['threaded'] == 'true'
 end
 
