@@ -11,7 +11,7 @@ module Schedulr
       
       doParse(true) do |file|
         @department = file[:department]
-        courses = parse_courses file[:data]  
+        courses = parse_courses file[:data]
         
         stage 'Parsing Requirements'
         parseRequirements courses
@@ -22,8 +22,8 @@ module Schedulr
     
         stage 'Saving'
         courses.each do |course|
-          course.term = @term
-          @queue.add course
+          course.term = @term unless course.term == @term
+          @queue.add course if course.new_record? || course.changed?
         end
       
         stage 'Initial'
@@ -62,7 +62,6 @@ module Schedulr
       for section in sections
         if oldSectionsHash[section.crn]
           oldSection = oldSectionsHash[section.crn]
-          oldSection.term_id = section.term_id if section.term_id && oldSection.term_id != section.term_id
           oldSection.comment = section.comment unless oldSection.comment == section.comment
           oldSection.notes = section.notes unless oldSection.notes == section.notes
           oldSection.title = section.title unless oldSection.title == section.title
@@ -88,11 +87,13 @@ module Schedulr
     def mergeTimes(section, times) 
       oldSection = @sections[section.crn]
       return unless oldSection
+      
       oldTimes = {}
       oldSection.course_section_times.each{|time| oldTimes[time.to_key] = time}
-      0.upto(times.length-1) do |index|
-        oldTime = oldTimes[times[index].to_key]
-        times[index] = oldTime if oldTime
+      
+      for time in times
+        oldTime = oldTimes[time.to_key]
+        section.course_section_times << (oldTime ? oldTime : time)
       end
     end
     
@@ -158,7 +159,9 @@ module Schedulr
       else
         @courses[c.courseid] = c
       end
-      c.save
+      if c.new_record? || c.changed?
+        c.save
+      end
       c
     end
     
@@ -303,12 +306,10 @@ module Schedulr
           end
         end
       end
-      
       mergeTimes(section, times)
-      section.course_section_times = times
       
-      instructors = []
       #iterate over each of the links, checking for links with a mailto: indicating an instructor name
+      instructors = []
       for link in instructorLinks
         href = link.attributes['href']
         name = link.attributes['target']

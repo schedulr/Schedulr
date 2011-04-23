@@ -1,5 +1,16 @@
 module Schedulr
   class ThreadedQueue
+    def self.load
+      return unless ENV['threaded'] == 'true'
+      
+      loadDirs = ['lib', 'app/models', 'app/helpers', 'lib/parser', 'lib/javascript']
+      for dir in loadDirs
+        Dir.glob(File.join(Rails.root, dir, "*.rb")).each do |entry|
+          require entry
+        end
+      end
+    end
+    
     def self.create(&block)
       if ENV['threaded'] == 'true'
         ThreadedQueue.new block
@@ -7,39 +18,60 @@ module Schedulr
         UnThreadedQueue.new block
       end
     end
+  end
+  
+  class ThreadedQueue    
+    def initialize(block)
+      @block = block
+      @threads = []
+    end
     
+    def add(item)
+      Thread.new{@block.call(item)}
+    end
+    
+    def complete
+    end
+  end
+  
+  class ThreadedQueueBroken
     def initialize(block)
       @stop = false
       @block = block
       @queue = []
       @threads = []
-      @mutex = Mutex.new
+      @lock = Mutex.new
+      createThreads
     end
     
     def add(item)
-      @mutex.lock
-      @queue << item
-      @mutex.unlock
+      @lock.synchronize do
+        @queue << item
+      end
     end
     
     def complete
       @stop = true
     end
     
+    def handleItem(item)
+      item.save!
+    end
+    
     def createThreads
-      1.times do
-        @threads << Thread.new do
-          while true
-            while @queue.length > 0
-              @mutex.lock
-              item = @queue.shift
-              @mutex.unlock
-              @block.call(item)
+      Thread.new do
+        while true
+          if Thread.list.length < 5
+            if @queue.length > 0
+              @lock.synchronize do
+                handleItem(@queue.shift)
+              end
             end
-            
+              
             break if @stop
-            sleep 0.1
           end
+          
+          sleep 0.1
         end
       end
     end
@@ -51,7 +83,7 @@ module Schedulr
     end
     
     def add(item)
-      block.call(item)
+      @block.call(item)
     end
     
     def complete

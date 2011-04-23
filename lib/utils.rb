@@ -14,7 +14,7 @@ module Schedulr
     Net::SSH.start(settings[:domain], settings[:user], :keys => [settings[:sshkey]])
   end
   
-  def download(url, filename, parse=true, force=false, reDownload=true)
+  def self.download(url, filename, parse=true, force=false, reDownload=true)
     FileUtils.mkdir_p(File.join(Rails.root, 'parser/html'))
     
     if force || (reDownload && ENV['use_cache'] != 'true') || !File.exists?(filename)

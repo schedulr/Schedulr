@@ -20,9 +20,10 @@ module Schedulr
     def self.parseAll
       #terms = Term.all(:conditions => ['id > 14'])
       #terms = [Term.find(1), Term.find(6)]
-      terms = Term.all
+      terms = [Term.find(1)]
+      #terms = Term.all
       
-      queue = Schedulr::ThreadedQueue.create{|course| course.save}
+      queue = Schedulr::ThreadedQueue.create{|course| puts 'saving'; course.save}
       for term in terms
         puts "Parsing #{term.code}"
         parser = Parser.new term, queue
@@ -61,22 +62,22 @@ module Schedulr
       @files = []
       @department = nil
       @count = 0
-      @mutex = Mutex.new
       
       for department in @parseDepartments
         downloadDepartmentData department, parse, reDownload
       end
       
-      max = 300
+      max = 200
       while true
-        @mutex.lock
         shouldBreak = @files.length >= @parseDepartments.length
-        @mutex.unlock
         break if shouldBreak
         
         sleep 0.1
         max -= 1
-        break if max <= 0
+        if max <= 0
+          puts "TIMEOUT"
+          break
+        end
       end
       
       for file in @files
@@ -89,20 +90,17 @@ module Schedulr
       thread = Thread.new do
         FileUtils.mkdir_p(File.join(Rails.root, "parser/html/#{department.code}"))
         filename = File.join(Rails.root, "parser/html/#{department.code}/#{@code}.html")
-        movedFilename = File.join(Rails.root, "parser/html/#{department.code}/#{@code}_#{Time.now.to_i}.html")
         
         url = "http://novasis.villanova.edu/pls/bannerprd/bvckschd.p_get_crse_unsec?begin_ap=a&begin_hh=0&begin_mi=0&end_ap=a&end_hh=0&end_mi=0&sel_attr=dummy&sel_attr=%25&sel_camp=dummy&sel_crse=&sel_day=dummy&sel_from_cred=&sel_insm=dummy&sel_instr=dummy&sel_instr=%25&sel_levl=dummy&sel_ptrm=dummy&sel_schd=dummy&sel_sess=dummy&sel_subj=dummy&sel_subj=#{department.code}&sel_title=&sel_to_cred=&term_in=#{@code}"
         
-        data = download(url, filename, parse, false, reDownload)
+        data = Schedulr::download(url, filename, parse, false, reDownload)
       
         unless ENV['use_cache']
           #remove the file so if wget ever fails we error out rather than using old data
           #FileUtils.mv(filename, movedFilename)
         end
         
-        @mutex.lock
         @files << {:data => data, :department => department}
-        @mutex.unlock
         Rails.logger.debug "Received Data for #{department.code}"
       end
     end

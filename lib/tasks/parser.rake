@@ -9,6 +9,7 @@ require 'uri'
 
 desc 'Grabs the courses from novasis and updates the db.'
 task :parse_all => :environment do
+  Schedulr::ThreadedQueue.load
   Schedulr::handleErrors do
     Schedulr::Parser.parseAll do |parser|
       parser.parse
@@ -19,6 +20,7 @@ end
 
 desc 'Grabs the courses from novasis and updates the db.'
 task :parse_current_terms => :environment do
+  Schedulr::ThreadedQueue.load
   Schedulr::handleErrors do
     Schedulr::Parser.parseCurrentTerms do |parser|
       parser.parse
