@@ -12,35 +12,24 @@ module Schedulr
     end
     
     def self.create(&block)
+      # The threaded queue is much faster for the initial parse, but there is little difference for subsequent parses
+      # However, it's results are non-deterministic.  Repeating the initial parse on the same data doesn't return
+      # the same number of courses, so it is disabled for now.
+      return ThreadedQueue.new block
       if ENV['threaded'] == 'true'
         ThreadedQueue.new block
       else
         UnThreadedQueue.new block
       end
     end
-  end
-  
-  class ThreadedQueue    
-    def initialize(block)
-      @block = block
-      @threads = []
-    end
     
-    def add(item)
-      Thread.new{@block.call(item)}
-    end
-    
-    def complete
-    end
-  end
-  
-  class ThreadedQueueBroken
     def initialize(block)
       @stop = false
       @block = block
       @queue = []
       @threads = []
       @lock = Mutex.new
+      @mainThread = Thread.list[0]
       createThreads
     end
     
@@ -52,6 +41,9 @@ module Schedulr
     
     def complete
       @stop = true
+      for thread in @threads
+        thread.join
+      end
     end
     
     def handleItem(item)
@@ -59,19 +51,26 @@ module Schedulr
     end
     
     def createThreads
-      Thread.new do
-        while true
-          if Thread.list.length < 5
+      config = YAML::load(open(File.join(Rails.root, 'config/database.yml')))[Rails.env]
+      (config['pool'].to_i-1).times do
+        @threads << Thread.new do
+          while true
             if @queue.length > 0
+              item = nil
               @lock.synchronize do
-                handleItem(@queue.shift)
+                item = @queue.shift
+              end
+              print "#{@queue.length}\n"
+              handleItem(item)
+              Thread.pass
+            else
+              if @stop
+                break
+              else
+                @mainThread.run
               end
             end
-              
-            break if @stop
           end
-          
-          sleep 0.1
         end
       end
     end

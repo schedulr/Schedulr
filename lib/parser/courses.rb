@@ -22,7 +22,7 @@ module Schedulr
     
         stage 'Saving'
         courses.each do |course|
-          course.term = @term unless course.term == @term
+          course.term = @term
           @queue.add course if course.new_record? || course.changed?
         end
       
@@ -34,7 +34,7 @@ module Schedulr
     
     def stage(label)
       Rails.logger.debug "#{@stageLabel} #{@department.code if @department}: #{(Time.now.to_i() - @stageTime.to_i())}"
-      puts "#{@stageLabel} #{@department.code if @department}: #{(Time.now.to_i() - @stageTime.to_i())}"
+      #puts "#{@stageLabel} #{@department.code if @department}: #{(Time.now.to_i() - @stageTime.to_i())}"
       @stageTime = Time.now
       @stageLabel = label
     end
@@ -45,7 +45,6 @@ module Schedulr
       sections = @sections.map{|crn, section| section}.compact.reject{|section| !section.crn || dict[section.crn] != nil}
       
       if sections.length < 10
-        puts "!!!!!!!!!!#{sections.inspect}"
         sections.each{|section| section.full_destroy}
       else
         message = "!"*80
@@ -62,6 +61,7 @@ module Schedulr
       for section in sections
         if oldSectionsHash[section.crn]
           oldSection = oldSectionsHash[section.crn]
+          
           oldSection.comment = section.comment unless oldSection.comment == section.comment
           oldSection.notes = section.notes unless oldSection.notes == section.notes
           oldSection.title = section.title unless oldSection.title == section.title
@@ -87,13 +87,11 @@ module Schedulr
     def mergeTimes(section, times) 
       oldSection = @sections[section.crn]
       return unless oldSection
-      
       oldTimes = {}
       oldSection.course_section_times.each{|time| oldTimes[time.to_key] = time}
-      
-      for time in times
-        oldTime = oldTimes[time.to_key]
-        section.course_section_times << (oldTime ? oldTime : time)
+      0.upto(times.length-1) do |index|
+        oldTime = oldTimes[times[index].to_key]
+        times[index] = oldTime if oldTime
       end
     end
     
@@ -307,6 +305,7 @@ module Schedulr
         end
       end
       mergeTimes(section, times)
+      section.course_section_times = times
       
       #iterate over each of the links, checking for links with a mailto: indicating an instructor name
       instructors = []

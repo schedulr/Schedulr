@@ -20,15 +20,16 @@ module Schedulr
     def self.parseAll
       #terms = Term.all(:conditions => ['id > 14'])
       #terms = [Term.find(1), Term.find(6)]
-      terms = [Term.find(1)]
-      #terms = Term.all
+      #terms = [Term.find(1)]
+      terms = Term.all
       
-      queue = Schedulr::ThreadedQueue.create{|course| puts 'saving'; course.save}
+      queue = Schedulr::ThreadedQueue.create{|course| course.save}
       for term in terms
-        puts "Parsing #{term.code}"
         parser = Parser.new term, queue
         yield parser
+        puts "Completed Parsing #{term.full_name}"
       end
+      puts "Saving Remaining Objects to Database"
       queue.complete
     end
     
@@ -75,7 +76,7 @@ module Schedulr
         sleep 0.1
         max -= 1
         if max <= 0
-          puts "TIMEOUT"
+          puts "TIMEOUT #{@files.length} #{@parseDepartments.length}"
           break
         end
       end
