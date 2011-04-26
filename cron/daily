@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd /home/schedulr/production/current
+
+rake RAILS_ENV=production jobs=courses,enrollment,jsobject,terms,departments,descriptions terms=all parse

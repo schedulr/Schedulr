@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd /home/schedulr/production/current
+
+rake RAILS_ENV=production db:backup
+rake RAILS_ENV=production jobs=courses,jsobject terms=current parse
