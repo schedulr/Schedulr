@@ -260,7 +260,7 @@ module Schedulr
     def referenceCoursesInDepartments
       #create an array of all of the courses taught by each department
       @departments.map do |department| 
-        c = department.courses.reject{|course| course.course_sections.length == 0}.sort{|a, b| a.courseid <=> b.courseid}.map{|course| "#{COURSES}[#{course.id}]"}
+        c = department.courses.sections_term(@term).sort{|a, b| a.courseid <=> b.courseid}.map{|course| "#{COURSES}[#{course.id}]"}
         "#{DEPARTMENTS}[#{department.id}].courses=[#{c.join(',')}];"
       end
     end
@@ -277,7 +277,7 @@ module Schedulr
       #create arrays of the courses and course sections for each professor
       #for some reason eager loading of courses does not work here
       @instructors.map do |instructor|
-        sections = instructor.course_sections.in_term(@term).reject{|section| section.term_id != @term.id}
+        sections = instructor.course_sections.in_term(@term)
         if sections.length > 0
           sections = sections.sort{|a, b| @coursesDict[a.course_id].courseid <=> @coursesDict[b.course_id].courseid}
           

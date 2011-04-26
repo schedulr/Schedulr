@@ -29,7 +29,6 @@ task :parse => :environment do |parser|
     # run the terms parser once if requested
     Schedulr::Parser.new.terms if jobs['terms']
     Schedulr::Parser.new.departments if jobs['departments']
-    Schedulr::Parser.new.descriptions if jobs['descriptions']
     
     # setup for the parser
     Schedulr::ThreadedQueue.load
@@ -45,6 +44,9 @@ task :parse => :environment do |parser|
       end
       jsObject.generate(term) if jobs['jsobject']
     end
+    
+    # run this after the courses have been parsed
+    Schedulr::Parser.new.descriptions if jobs['descriptions']
     
     #cleanup
     queue.complete

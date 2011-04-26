@@ -11,6 +11,10 @@ module Enumerable
   def in_term(term)
     self.reject{|item| item.term_id != term.id}
   end
+  
+  def sections_term(term)
+    self.reject{|course| course.course_sections.in_term(term).length == 0}
+  end
 end
 
 module Schedulr
@@ -32,7 +36,7 @@ module Schedulr
     def generate(term)
       @term = term
       @sections = CourseSection.all :conditions => ['term_id = ?', @term.id], :include => [:requirements, :instructors, :course_section_times, :course]
-      @termCourses = @courses.reject{|course| course.course_sections.in_term(term).length == 0}
+      @termCourses = @courses.sections_term(@term)
       
       Schedulr::log :info, "Executing: createJsfile for #{term.code} at #{Time.now}"
       
