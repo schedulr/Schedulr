@@ -13,9 +13,7 @@ require 'queue.rb'
 module Schedulr
   class Parser    
     attr_accessor :term
-    
-    @stageTime = Time.now
-    @stageLabel = 'Initial'
+    include Schedulr
     
     def initialize(term=Term.schedulr_term, queue=nil)
       @term = term
@@ -36,15 +34,13 @@ module Schedulr
         downloadDepartmentData department, parse, reDownload
       end
       
-      max = 300
+      endTime = Time.now+30
       while true
         shouldBreak = @files.length >= @parseDepartments.length
         break if shouldBreak
         
-        sleep 0.1
-        max -= 1
-        if max <= 0
-          puts "TIMEOUT #{@files.length} #{@parseDepartments.length} #{max}"
+        if endTime < Time.now
+          puts "TIMEOUT #{@files.length} #{@parseDepartments.length} #{Time.now} #{endTime}"
           break
         end
       end
@@ -62,7 +58,7 @@ module Schedulr
         
         url = "http://novasis.villanova.edu/pls/bannerprd/bvckschd.p_get_crse_unsec?begin_ap=a&begin_hh=0&begin_mi=0&end_ap=a&end_hh=0&end_mi=0&sel_attr=dummy&sel_attr=%25&sel_camp=dummy&sel_crse=&sel_day=dummy&sel_from_cred=&sel_insm=dummy&sel_instr=dummy&sel_instr=%25&sel_levl=dummy&sel_ptrm=dummy&sel_schd=dummy&sel_sess=dummy&sel_subj=dummy&sel_subj=#{department.code}&sel_title=&sel_to_cred=&term_in=#{@code}"
         
-        data = Schedulr::download(url, filename, parse, false, reDownload)
+        data = download(url, filename, parse, false, reDownload)
       
         unless ENV['use_cache']
           #remove the file so if wget ever fails we error out rather than using old data

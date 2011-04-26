@@ -13,8 +13,13 @@ task :parse => :environment do |parser|
     params, jobs, terms = {}, ENV['jobs'], ENV['terms']
     unless jobs && terms
       puts "The jobs and terms parameters must be specified."
+      puts "Required Options:"
       puts "jobs is a comma separated list of these values: courses,enrollment,descriptions,jsobject,terms,departments."
       puts "terms is the string all, current, debug."
+      puts "Additional Options:"
+      puts "use_cache=true -> Does not redownload html files from Novasis if they exist."
+      puts "debug=true -> Prints extra logging information to the screen (instead of just to the log file)."
+      puts "threaded=true -> Uses a thread pool to save course objects (Disabled)"
       exit
     end
     
@@ -22,8 +27,9 @@ task :parse => :environment do |parser|
     terms = ENV['terms'] == 'all' ? Term.all : (ENV['terms'] == 'current' ? Term.current_terms : [Term.schedulr_term])
     
     # run the terms parser once if requested
-    Schedulr::Parser.new.updateTerms if jobs['terms']
+    Schedulr::Parser.new.terms if jobs['terms']
     Schedulr::Parser.new.departments if jobs['departments']
+    Schedulr::Parser.new.descriptions if jobs['descriptions']
     
     # setup for the parser
     Schedulr::ThreadedQueue.load
@@ -32,12 +38,10 @@ task :parse => :environment do |parser|
     
     # run the parser jobs one for each term requested
     for term in terms
-      if jobs['courses'] || jobs['enrollment'] || jobs['descriptions']
+      if jobs['courses'] || jobs['enrollment']
         parser = Schedulr::Parser.new(term, queue)
         parser.parse if jobs['courses']
         parser.enrollment if jobs['enrollment']
-        parser.descriptions if jobs['descriptions']
-        parser.departments if jobs['departments']
       end
       jsObject.generate(term) if jobs['jsobject']
     end

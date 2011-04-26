@@ -6,7 +6,7 @@ require 'utils.rb'
 module Schedulr
   class Parser    
     def parse
-      Rails.logger.info "Executing: parseCourses for #{@term.code} at #{Time.now}"
+      Schedulr::log :info, "Executing: parseCourses for #{@term.code} at #{Time.now}"
       loadData
       
       @foundSections = []
@@ -14,31 +14,17 @@ module Schedulr
       doParse(true) do |file|
         @department = file[:department]
         courses = parse_courses file[:data]
-        
-        stage 'Parsing Requirements'
         parseRequirements courses
-    
-        stage 'Merging'
         mergeSections(courses)
         @foundSections = @foundSections + courses
     
-        stage 'Saving'
         courses.each do |course|
           course.term = @term
           @queue.add course if course.new_record? || course.changed?
         end
-      
-        stage 'Initial'
       end
       
       deleteOldSections
-    end
-    
-    def stage(label)
-      Rails.logger.debug "#{@stageLabel} #{@department.code if @department}: #{(Time.now.to_i() - @stageTime.to_i())}"
-      #puts "#{@stageLabel} #{@department.code if @department}: #{(Time.now.to_i() - @stageTime.to_i())}"
-      @stageTime = Time.now
-      @stageLabel = label
     end
     
     def deleteOldSections
@@ -186,7 +172,6 @@ module Schedulr
     #the main method for parsing courses
     def parse_courses(doc)
       doc = Hpricot(doc)
-      stage "Parsing Courses"	
       sections = []
       
       t = 0

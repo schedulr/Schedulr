@@ -34,7 +34,7 @@ module Schedulr
       @sections = CourseSection.all :conditions => ['term_id = ?', @term.id], :include => [:requirements, :instructors, :course_section_times, :course]
       @termCourses = @courses.reject{|course| course.course_sections.in_term(term).length == 0}
       
-      Rails.logger.info "Executing: createJsfile for #{term.code} at #{Time.now}"
+      Schedulr::log :info, "Executing: createJsfile for #{term.code} at #{Time.now}"
       
       data = []
       createJsObject(data)

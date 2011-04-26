@@ -5,8 +5,8 @@ require 'utils.rb'
 
 module Schedulr
   class Parser
-    def updateTerms
-      Rails.logger.info "Executing: parseTerms at #{Time.now}"
+    def terms
+      Schedulr::log :info, "Executing: parseTerms at #{Time.now}"
       filename = File.join(Rails.root, 'parser/html/terms.html')
       url = "http://novasis.villanova.edu/pls/bannerprd/bvckschd.p_disp_dyn_sched"
       

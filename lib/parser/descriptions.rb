@@ -6,7 +6,7 @@ require 'utils.rb'
 module Schedulr
   class Parser
     def descriptions
-      Rails.logger.info "Executing: parseDescriptions at #{Time.now}"
+      Schedulr::log :info, "Executing: parseDescriptions at #{Time.now}"
       loadData
       
       filename = File.join(Rails.root, 'parser/html/catalog.html')
