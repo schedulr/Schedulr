@@ -5,7 +5,7 @@ require 'utils.rb'
 
 module Schedulr
   class Parser    
-    def parseEnrollment(reDownload=true)
+    def enrollment(reDownload=true)
       Rails.logger.info "Executing: parseEnrollment for #{@term.code} at #{Time.now}"
       t = Time.now
       t = t.strftime("%I:%M %p")

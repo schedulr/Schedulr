@@ -5,7 +5,7 @@ require 'utils.rb'
 
 module Schedulr
   class Parser
-    def updateDepartments
+    def departments
       Rails.logger.info "Executing: parseDepartments at #{Time.now}"
       filename = File.join(Rails.root, 'parser/html/departments.html')
       url = "http://novasis.villanova.edu/pls/bannerprd/bvckgens.p_proc_term_date?p_calling_proc=bvckschd.p_disp_dyn_sched&p_term=#{Term.schedulr_term.code}&search_option=D"
@@ -18,7 +18,7 @@ module Schedulr
       (data/'select#subj_id option').each do |option|
         code = option.attributes['value']
         unless departments[code] || code == '%'
-          Rails.logger.debug "inserting #{departments[code]}"
+          Rails.logger.debug "Inserting #{departments[code]}"
           Department.new({:code => code, :name => option.inner_text}).save
         end
       end 

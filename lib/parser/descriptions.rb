@@ -5,8 +5,10 @@ require 'utils.rb'
 
 module Schedulr
   class Parser
-    def updateDescriptions
+    def descriptions
       Rails.logger.info "Executing: parseDescriptions at #{Time.now}"
+      loadData
+      
       filename = File.join(Rails.root, 'parser/html/catalog.html')
       departments = Department.all.map{|department| "sel_subj=#{department.code}"}.join('&')
       url = "http://novasis.villanova.edu/pls/bannerprd/bvckctlg.p_display_courses?sel_attr=dummy&sel_attr=%25&sel_coll=dummy&sel_coll=%25&sel_crse_end=&sel_crse_strt=&sel_dept=dummy&sel_dept=%25&sel_divs=dummy&sel_divs=%25&sel_from_cred=&sel_levl=dummy&sel_levl=%25&sel_schd=dummy&sel_schd=%25&sel_subj=dummy&#{departments}&sel_title=&sel_to_cred=&term_in=#{Term.current_term.code}"

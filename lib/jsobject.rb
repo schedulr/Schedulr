@@ -47,14 +47,5 @@ module Schedulr
       FileUtils.mkdir_p(dir)
       File.open(File.join(dir, 'data.js'), 'w') {|f| f.write(data) }
     end
-    
-    def self.create_all
-      obj = JsObject.new
-      terms = Term.all
-      for term in terms
-        puts "#{term.code} at #{Time.now}"
-        obj.generate(term)
-      end
-    end
   end
 end

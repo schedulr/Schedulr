@@ -47,7 +47,7 @@ module Schedulr
     end
     
     def handleItem(item)
-      item.save!
+      @block.call item
     end
     
     def createThreads
@@ -60,7 +60,6 @@ module Schedulr
               @lock.synchronize do
                 item = @queue.shift
               end
-              print "#{@queue.length}\n"
               handleItem(item)
               Thread.pass
             else

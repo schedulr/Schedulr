@@ -17,42 +17,10 @@ module Schedulr
     @stageTime = Time.now
     @stageLabel = 'Initial'
     
-    def self.parseAll
-      #terms = Term.all(:conditions => ['id > 14'])
-      #terms = [Term.find(1), Term.find(6)]
-      #terms = [Term.find(1)]
-      terms = Term.all
-      
-      queue = Schedulr::ThreadedQueue.create{|course| course.save}
-      for term in terms
-        parser = Parser.new term, queue
-        yield parser
-        puts "Completed Parsing #{term.full_name}"
-      end
-      puts "Saving Remaining Objects to Database"
-      queue.complete
-    end
-    
-    def self.parseCurrentTerms
-      term = Term.schedulr_term
-      terms = Term.where(:year => [term.year, term.year+1])
-      terms = terms + Term.where(:year => term.year-1) if term.semester == 'Spring'
-      
-      queue = Schedulr::ThreadedQueue.create{|course| course.save}
-      for term in terms
-        puts "Parsing Current Term #{term.code}"
-        parser = Parser.new term, queue
-        yield parser
-      end
-      queue.complete
-    end
-    
     def initialize(term=Term.schedulr_term, queue=nil)
       @term = term
       @code = @term.code
       @queue = queue
-      
-      loadData
       
       @parseDepartments = Department.all(:order => 'name')
       #@parseDepartments = [Department.find(59)]
@@ -68,7 +36,7 @@ module Schedulr
         downloadDepartmentData department, parse, reDownload
       end
       
-      max = 200
+      max = 300
       while true
         shouldBreak = @files.length >= @parseDepartments.length
         break if shouldBreak
@@ -76,7 +44,7 @@ module Schedulr
         sleep 0.1
         max -= 1
         if max <= 0
-          puts "TIMEOUT #{@files.length} #{@parseDepartments.length}"
+          puts "TIMEOUT #{@files.length} #{@parseDepartments.length} #{max}"
           break
         end
       end

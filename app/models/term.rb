@@ -42,6 +42,15 @@ class Term < ActiveRecord::Base
     term.save
   end
   
+  #returns the terms for which users can actively register / will be able to register soon
+  def self.current_terms
+    term = Term.schedulr_term
+    terms = Term.where(:year => [term.year, term.year.to_i+1]).all
+    terms = terms + Term.where(:year => term.year.to_i-1).all if term.semester == 'Spring'
+    
+    terms
+  end
+  
   #returns every term in the database that we have course schedule information for
   def self.available_terms
     self.find :all, :conditions => ['section_info = ?', 'available'], :group => 'semester, year', :order => 'id DESC'

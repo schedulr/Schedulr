@@ -7,6 +7,8 @@ module Schedulr
   class Parser    
     def parse
       Rails.logger.info "Executing: parseCourses for #{@term.code} at #{Time.now}"
+      loadData
+      
       @foundSections = []
       
       doParse(true) do |file|
