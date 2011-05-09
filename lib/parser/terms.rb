@@ -19,6 +19,7 @@ module Schedulr
         next if code.length == 0 || name == 'None' || name.length == 0
         
         semester, year = name.strip.split(/\s+/)
+        next if year.to_i < 2010
         
         term = Term.find_by_semester_and_year(semester, year)
         term = Term.create_from_parser(semester, year, code) unless term

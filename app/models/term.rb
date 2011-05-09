@@ -32,7 +32,7 @@ class Term < ActiveRecord::Base
   
   def self.create_from_parser(semester, year, code)
     return nil if semester == 'Summer' # this can be added later, but I'm not parsing Novasis' summer session format
-    term = Term.new :semester => semester, :year => year.to_i, :code => code, :active => false
+    term = Term.new :semester => semester, :year => year.to_i, :code => code
     previousTerm = Term.find_by_year_and_semester(semester, term.year-1)
     previousTerm = Term.find_by_semester(semester) unless previousTerm
     
@@ -64,9 +64,6 @@ class Term < ActiveRecord::Base
   
   #returns the term that is used for registration purposes
   def self.schedulr_term(force=false)
-    term = self.where(:active => true).first
-    return term if term
-    
     term = self.current_term
     if force || 60.days.since(term.start_date) <= Date.today
       nextYear, nextSemester = term.year.to_i, 'Fall'
@@ -91,7 +88,6 @@ class Term < ActiveRecord::Base
     next_term.end_date = previous_term.end_date+1.year
     next_term.year = nextYear
     next_term.semester = nextSemester
-    next_term.active = false
     
     if nextSemester == 'Fall'
       next_term.code = "#{next_term.year.to_i+1}20"

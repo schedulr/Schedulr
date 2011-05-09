@@ -29,23 +29,32 @@ task :parse => :environment do |parser|
     # run the terms parser once if requested
     Schedulr::Parser.new.terms if jobs['terms']
     Schedulr::Parser.new.departments if jobs['departments']
+    ActiveRecord::Base.connection.clear_query_cache
     
     # setup for the parser
     Schedulr::ThreadedQueue.load
     queue = Schedulr::ThreadedQueue.create{|course| course.save}
-    jsObject = Schedulr::JsObject.new if jobs['jsobject']
     
     # run the parser jobs one for each term requested
-    for term in terms
-      if jobs['courses'] || jobs['enrollment']
+    if jobs['courses'] || jobs['enrollment']
+      for term in terms
         parser = Schedulr::Parser.new(term, queue)
         parser.parse if jobs['courses']
         parser.enrollment if jobs['enrollment']
+        ActiveRecord::Base.connection.clear_query_cache
       end
-      jsObject.generate(term) if jobs['jsobject']
+    end
+    
+    if jobs['jsobject']
+      jsObject = Schedulr::JsObject.new 
+      # run the parser jobs one for each term requested
+      for term in terms
+        jsObject.generate(term) if jobs['jsobject']
+      end
     end
     
     # run this after the courses have been parsed
+    ActiveRecord::Base.connection.clear_query_cache
     Schedulr::Parser.new.descriptions if jobs['descriptions']
     
     #cleanup
