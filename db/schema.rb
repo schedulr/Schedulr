@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110423215710) do
+ActiveRecord::Schema.define(:version => 20110508233239) do
 
   create_table "course_section_times", :force => true do |t|
     t.integer "course_section_id"
@@ -151,6 +151,7 @@ ActiveRecord::Schema.define(:version => 20110423215710) do
   add_index "schedules", ["person_id"], :name => "user_id"
 
   create_table "searches", :force => true do |t|
+    t.integer  "person_id"
     t.text     "search"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -178,12 +179,11 @@ ActiveRecord::Schema.define(:version => 20110423215710) do
   add_index "shares", ["secret"], :name => "secret"
 
   create_table "terms", :force => true do |t|
-    t.string  "code"
-    t.string  "year"
-    t.string  "semester"
-    t.date    "start_date"
-    t.date    "end_date"
-    t.boolean "active",     :default => false
+    t.string "code"
+    t.string "year"
+    t.string "semester"
+    t.date   "start_date"
+    t.date   "end_date"
   end
 
 end
